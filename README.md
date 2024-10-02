@@ -13,10 +13,10 @@
 </p>
 
 <p align="center">
-  <a href="<my arxiv page link>" target='_**blank**'>
+  <a href="https://arxiv.org/abs/2406.11840" target='_**blank**'>
     <img src="https://img.shields.io/badge/Paper-PDF-red?">
   </a> 
-  <a href="link to project page" target='_blank'>
+  <a href="https://andreamaduzzi.github.io/llana/" target='_blank'>
     <img src="https://img.shields.io/badge/Project-Page-red">
   </a>
   <a href="link to hf demo" target='_blank'>
@@ -33,12 +33,9 @@
 
 ## 
 <p align="center">
-  <video width="100%" controls>
-    <source src="assets/teaser_full_video_compressed.mp4" type="video/mp4">
-    Your browser does not support the video tag.
-  </video>
+  <img src="assets/teaser_full_video_compressed.gif" alt="Teaser GIF">
 </p>
-</br>
+
 
 <!-- contents with emoji -->
 ## 📋 Contents
