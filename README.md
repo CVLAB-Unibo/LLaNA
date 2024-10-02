@@ -1,12 +1,13 @@
 <br>
 <p align="center">
 <h1 align="center"><img src="assets/llana_icon-removebg-preview.png" align="center" width="5.0%">LLaNA: Large Language and NeRF Assistant (NeurIPS&nbsp;2024)</h1> 
+
   <p align="center">
-    <a href='https://andreamaduzzi.github.io/' target='_blank'>Andrea Amaduzzi</a>
-    <a href='https://www.unibo.it/sitoweb/pierluigi.zama' target='_blank'>Pierluigi Zama Ramirez</a>
-    <a href='https://www.unibo.it/sitoweb/giuseppe.lisanti' target='_blank'>Giuseppe Lisanti</a>
-    <a href='https://www.unibo.it/sitoweb/samuele.salti' target='_blank'>Samuele Salti</a>
-    <a href='https://www.unibo.it/sitoweb/luigi.distefano' target='_blank'>Luigi Di Stefano</a>
+    <a href='https://andreamaduzzi.github.io/' target='_blank'>Andrea Amaduzzi</a>&emsp;
+    <a href='https://www.unibo.it/sitoweb/pierluigi.zama' target='_blank'>Pierluigi Zama Ramirez</a>&emsp;
+    <a href='https://www.unibo.it/sitoweb/giuseppe.lisanti' target='_blank'>Giuseppe Lisanti</a>&emsp;
+    <a href='https://www.unibo.it/sitoweb/samuele.salti' target='_blank'>Samuele Salti</a>&emsp;
+    <a href='https://www.unibo.it/sitoweb/luigi.distefano' target='_blank'>Luigi Di Stefano</a>&emsp;
     <br>
     Computer Vision Lab, University of Bologna, Italy
   </p>
@@ -14,19 +15,19 @@
 
 <p align="center">
   <a href="https://arxiv.org/abs/2406.11840" target='_**blank**'>
-    <img src="https://img.shields.io/badge/Paper-PDF-red?">
+    <img src="https://img.shields.io/badge/Paper-PDF-red?" style="margin-right: 5px;">
   </a> 
   <a href="https://andreamaduzzi.github.io/llana/" target='_blank'>
-    <img src="https://img.shields.io/badge/Project-Page-red">
+    <img src="https://img.shields.io/badge/Project-Page-red" style="margin-right: 5px;">
   </a>
   <a href="link to hf demo" target='_blank'>
-    <img src="https://img.shields.io/badge/Demo-&#x1f917-red">
+    <img src="https://img.shields.io/badge/Demo-&#x1f917-red" style="margin-right: 5px;">
   </a>
   <a href="" target='_blank'>
-    <img src="https://visitor-badge.laobi.icu/badge?page_id=CVLAB-Unibo.LLaNA&left_color=gray&right_color=red">
+    <img src="https://visitor-badge.laobi.icu/badge?page_id=CVLAB-Unibo.LLaNA&left_color=gray&right_color=red" style="margin-right: 5px;">
   </a>
   <a href="https://github.com/CVLAB-Unibo/LLaNA/stargazers" target='_blank'>
-    <img src="https://img.shields.io/github/stars/CVLAB-Unibo/LLaNA?style=social">
+    <img src="https://img.shields.io/github/stars/CVLAB-Unibo/LLaNA?style=social" style="margin-right: 5px;">
   </a>
 </p>
 </p>
