@@ -214,7 +214,13 @@ As for the NeRF Captioning-QA and Classification Tasks, using torch.float16 as d
 If you find our work helpful, please consider starring this repo 🌟 and cite:
 
 ```bibtex
-aggiungi nuovo bibtex di NEURIPS 
+@InProceedings{NeurIPS24,
+  author       = "Amaduzzi, Andrea and Zama Ramirez, Pierluigi and Lisanti, Giuseppe and Salti, Samuele and Di Stefano, Luigi",
+  title        = "{LLaNA}: Large Language and {NeRF} Assistant",
+  booktitle    = "Advances in Neural Information Processing Systems (NeurIPS)",
+  year         = "2024",
+  month        = "Dec."
+} 
 ```
 
 ## 📄 License
