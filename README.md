@@ -1,6 +1,6 @@
 <br>
 <p align="center">
-<h1 align="center"><img src="assets/llana_icon-removebg-preview.png" align="center" width="5.0%">LLaNA: Large Language and NeRF Assistant (NeurIPS 2024)</h1>
+<h1 align="center"><img src="assets/llana_icon-removebg-preview.png" align="center" width="5.0%">LLaNA: Large Language and NeRF Assistant (NeurIPS&nbsp;2024)</h1> 
   <p align="center">
     <a href='https://andreamaduzzi.github.io/' target='_blank'>Andrea Amaduzzi</a>&emsp;
     <a href='https://www.unibo.it/sitoweb/pierluigi.zama' target='_blank'>Pierluigi Zama Ramirez</a>&emsp;
