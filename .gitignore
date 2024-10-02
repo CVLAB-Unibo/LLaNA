@@ -1,0 +1,6 @@
+# LLaNA large files
+data/*
+outputs/*
+
+# Byte-compiled
+__pycache__/
