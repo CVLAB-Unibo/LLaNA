@@ -2,11 +2,11 @@
 <p align="center">
 <h1 align="center"><img src="assets/llana_icon-removebg-preview.png" align="center" width="5.0%">LLaNA: Large Language and NeRF Assistant (NeurIPS&nbsp;2024)</h1> 
   <p align="center">
-    <a href='https://andreamaduzzi.github.io/' target='_blank'>Andrea Amaduzzi</a>&nbsp;
-    <a href='https://www.unibo.it/sitoweb/pierluigi.zama' target='_blank'>Pierluigi Zama Ramirez</a>&nbsp;
-    <a href='https://www.unibo.it/sitoweb/giuseppe.lisanti' target='_blank'>Giuseppe Lisanti</a>&nbsp;
-    <a href='https://www.unibo.it/sitoweb/samuele.salti' target='_blank'>Samuele Salti</a>&nbsp;
-    <a href='https://www.unibo.it/sitoweb/luigi.distefano' target='_blank'>Luigi Di Stefano</a>&nbsp;
+    <a href='https://andreamaduzzi.github.io/' target='_blank'>Andrea Amaduzzi</a>
+    <a href='https://www.unibo.it/sitoweb/pierluigi.zama' target='_blank'>Pierluigi Zama Ramirez</a>
+    <a href='https://www.unibo.it/sitoweb/giuseppe.lisanti' target='_blank'>Giuseppe Lisanti</a>
+    <a href='https://www.unibo.it/sitoweb/samuele.salti' target='_blank'>Samuele Salti</a>
+    <a href='https://www.unibo.it/sitoweb/luigi.distefano' target='_blank'>Luigi Di Stefano</a>
     <br>
     Computer Vision Lab, University of Bologna, Italy
   </p>
