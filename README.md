@@ -44,12 +44,14 @@
 - [🔧 Installation](#-installation)
 - [📦 Data Preparation](#-data-preparation)
 - [👨‍🎓 Training](#-training)
+- [💾 Checkpoints of trained LLaNA](#-checkpoints-of-trained-llana)
 - [🧑‍🏫 Evaluation](#-evaluation)
 - [🗣️ Chatting](#-chatting)
 - [🔗 Citation](#-citation)
 - [📄 License](#-license)
 - [📚 Related Work](#-related-work)
 - [👏 Acknowledgements](#-acknowledgements)
+- [⚖️ Terms of Usage](#-terms-of-usage)
 
 ## 🤖 Online Demo
 LLaNA is online! Try it at [link to hf demo](http://101.230.144.196).
@@ -74,21 +76,23 @@ conda create -n llana python=3.10 -y
 conda activate llana
 pip install --upgrade pip
 pip install -r requirements.txt
-
-# * for training
-pip install ninja
-pip install flash-attn
 ```
 
 ## 📦 Data Preparation
 In this work, we propose the dataset ShapeNeRF-Text, for training and evaluation on the tasks of NeRF captioning, QA and zero-shot classification.
 This dataset features paired NeRFs and language annotations for ShapeNet objects, in particular for all the 40K NeRFs available in [nf2vec](https://github.com/CVLAB-Unibo/nf2vec) dataset.
-Such data can be downloaded at the following link: TODO ADD LINK.
+Such data can be downloaded from the Huggingface Hub:
+```bash
+python download_shapenerf_text.py --splits SPLITS
+```
+where ```SPLITS``` will be the list of splits to download, to be chosen among 'train', 'val', 'test'.
+
 After the download, the folder structure will be the following:
 ```plaintext
 LLaNA
-├── LLaNAdata
-│   ├── llana
+├── data
+|   ├── hst.json
+│   ├── shapenerf_text
 │   │   ├── train
 │   │   │    ├── texts
 │   │   │    │    ├── conversations_brief.json
@@ -139,10 +143,10 @@ bash scripts/LLaNA_train_stage2.sh
 
 ### Computational Resources for Training
 LLaNA has been trained on 4 NVIDIA A100 with 64GB of VRAM each. Completing both stages requires ∼1 day of training.
-The weights of the trained models will be saved inside the `outputs` directory.
+The weights of the trained models will be saved inside the `checkpoints` directory.
 
-## Checkpoints of trained LLaNA
-The trained LLaNA checkpoints can be downloaded from TODO ADD LINK. They must be saved inside the `outputs` directory.
+## 💾 Checkpoints of trained LLaNA
+The trained LLaNA checkpoints can be downloaded from TODO ADD LINK. They must be saved inside the `checkpoints` directory.
 
 ## 🧑‍🏫 Evaluation
 The evaluation metrics reported in the research paper are computed on the test set of ShapeNeRF-Text, which can be downloaded following the instructions in TODO add link to Data Preparation section.
@@ -166,7 +170,7 @@ python llana/eval/eval_shapenet_llana.py --model_name PATH_TO_MODEL --hst_datase
 ```
 
 
-```model_name``` provides the path to the model weights, which must be stored inside the `outputs` directory.
+```model_name``` provides the path to the model weights, which must be stored inside the `checkpoints` directory.
 These scripts compute the LLaNA textual predictions for the captioning task. Such output captions will be saved in the directory `evaluation_results` as json files.
 
 Once obtained such textual data, the evaluation metrics reported on the research paper (SentenceBERT, SimCSE, BLEU-1, ROUGE-L, METEOR) can be computed with the following code:
@@ -238,3 +242,8 @@ This work is under the <a rel="license" href="http://creativecommons.org/license
 
 ## 👏 Acknowledgements
 [CINECA](https://www.cineca.it/): We acknowledge the CINECA award under the ISCRA initiative, for the availability of high-performance computing resources and support
+
+
+## Terms of usage
+By using this service, users are required to agree to the following terms: The service is a research preview intended for non-commercial use
+only. It only provides limited safety measures and may generate offensive content. It must not be used for any illegal, harmful, violent, racist, or sexual purposes. The service may collect user dialogue data for future research.

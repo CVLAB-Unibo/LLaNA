@@ -27,21 +27,18 @@ def make_object_nerf_data_module(tokenizer: transformers.PreTrainedTokenizer, da
             data_args=data_args
         )
         print("Done!")
-        if data_args.data_debug_num > 0:
-            print('Debug mode, using training set as val set.')
-            val_dataset = train_dataset
-        else:
-            # * make a val dataset
-            print("Loading validation datasets.")
-            val_dataset = ObjectNeRFDataset(
-                split='val', # * load train split
-                root=data_args.root,
-                data_folder=data_args.data_folder,
-                anno_folder=data_args.anno_folder,
-                conversation_types=data_args.conversation_types,
-                tokenizer=tokenizer,
-                data_args=data_args
-            )
+        
+        # * make a val dataset
+        print("Loading validation datasets.")
+        val_dataset = ObjectNeRFDataset(
+            split='val', # * load train split
+            root=data_args.root,
+            data_folder=data_args.data_folder,
+            anno_folder=data_args.anno_folder,
+            conversation_types=data_args.conversation_types,
+            tokenizer=tokenizer,
+            data_args=data_args
+        )
         return dict(train_dataset=train_dataset, eval_dataset=val_dataset, data_collator=data_collator)
     else:
         # * use all data as training data
@@ -114,10 +111,6 @@ class ObjectNeRFDataset(Dataset):
         for conversation_type in self.conversation_types:
             print(f"Number of {conversation_type}: {len([data for data in self.list_data_dict if data['conversation_type'] == conversation_type])}")
 
-        if self.data_args is not None and self.data_args.data_debug_num > 0:
-            self.list_data_dict = self.list_data_dict[:self.data_args.data_debug_num]
-            # * print all the scan_id in debug mode, not using for loop
-            print('Debug mode, using: ' + ' '.join([data['object_id'] for data in self.list_data_dict]))
  
     def _load_vec(self, object_id):
         filename = f"{object_id}.npy"  
@@ -204,12 +197,11 @@ class ObjectNeRFDataset_Eval(Dataset):
         print('data_args:', data_args)
         self.nf2vec_config = data_args.nf2vec_config if data_args is not None else None
         self.vec_indicator = '<point>'
-        self.data_path = os.path.join(self.root, self.split, self.data_folder)  # path to vecs
-        #self.anno_path = os.path.join(self.root, self.split, self.anno_folder, 'conversations_rephrase.json')  # path to conversations: "conversations" or "conversations_rephrase"
+        self.data_path = os.path.join(self.root, self.split, self.data_folder)
         
         if hst_dataset:
             # read JSON
-            self.anno_path = os.path.join('data/hst_dataset_filtered.json')
+            self.anno_path = os.path.join(self.root, 'hst.json')
             # Load the data list from JSON
             print(f"Loading anno file from {self.anno_path}.")
             with open(self.anno_path, "r") as json_file:
@@ -218,9 +210,9 @@ class ObjectNeRFDataset_Eval(Dataset):
         else:
             print(f'= = = = = = = = conversation_types: {self.conversation_type} = = = = = = = =')
             if self.conversation_type == "brief_description":
-                self.anno_path = os.path.join(self.root, self.split, self.anno_folder, 'conversations_shapenet_text_brief_FULL.json')  # path to conversations: "conversations" or "conversations_rephrase"
+                self.anno_path = os.path.join(self.root, self.split, self.anno_folder, 'conversations_brief.json')  # path to conversations: "conversations" or "conversations_rephrase"
             else:
-                self.anno_path = os.path.join(self.root, self.split, self.anno_folder, 'conversations_shapenet_text_complex_FULL.json')
+                self.anno_path = os.path.join(self.root, self.split, self.anno_folder, 'conversations_complex.json')
             
             # Load the data list from JSON
             print(f"Loading anno file from {self.anno_path}.")
@@ -238,10 +230,6 @@ class ObjectNeRFDataset_Eval(Dataset):
         # * print the size of different conversation_type
         print(f"Number of {self.conversation_type}: {len([data for data in self.filtered_data if data.get('conversation_type', 'brief_description') == self.conversation_type])}")
 
-        if self.data_args is not None and self.data_args.data_debug_num > 0:
-            self.filtered_data = self.filtered_data[:self.data_args.data_debug_num]
-            # * print all the scan_id in debug mode, not using for loop
-            print('Debug mode, using: ' + ' '.join([data['object_id'] for data in self.filtered_data]))
  
     def _load_vec(self, object_id):
         filename = f"{object_id}.npy"  
@@ -301,8 +289,6 @@ if __name__ == '__main__':
     parser.add_argument("--anno_folder", default="shapenet_texts", type=str, help="Name of folder with conversations.")
     parser.add_argument("--split", default='train', type=str, 
                         help="Whether to use the train or validation or test dataset.")
-    parser.add_argument("--data_debug_num", default=0, type=int,
-                        help="Number of data to debug with.")
     parser.add_argument("--tokenizer_path", default='outputs/LLaNA_7B_v1.1_init', type=str, help="Path to the tokenizer config file.")
     
     args = parser.parse_args()

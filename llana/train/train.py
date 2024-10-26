@@ -47,7 +47,6 @@ class DataArguments:
     data_path: str = field(default="ScanNet", metadata={"help": "Path to the training data."})
     anno_path: str = field(default=None, metadata={"help": "Path to the utterance data. If None, will use referit3d by defautl."})
     use_color: bool = field(default=False, metadata={"help": "Whether to use color."})
-    data_debug_num: int = field(default=0, metadata={"help": "Number of data to use in debug mode. If larger than 0, use debug mode, else use the whole data"})
     split_train_val: bool = field(default=False, metadata={"help": "Whether to split train and val."})
     split_ratio: float = field(default=0.9, metadata={"help": "Ratio of train and val."})
     pointnum: int = field(default=8192, metadata={"help": "Number of points."})

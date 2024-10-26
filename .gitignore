@@ -2,5 +2,11 @@
 data/*
 outputs/*
 
+# notebooks
+*.ipynb
+
+# Huggingface hub files
+push_dataset_to_hub.py
+
 # Byte-compiled
 __pycache__/

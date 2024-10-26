@@ -1,1 +1,1 @@
-from .model import PointLLMLlamaForCausalLM, NeRFLLMLlamaForCausalLM
+from .model import LLaNA

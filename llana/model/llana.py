@@ -20,14 +20,14 @@ import os
 import logging
 logger = logging.getLogger(__name__)
 
-class NeRFLLMConfig(LlamaConfig):
-    model_type = "nerfllm"
+class LLaNAConfig(LlamaConfig):
+    model_type = "llana"
 
-class NeRFLLMLlamaModel(LlamaModel):
-    config_class = NeRFLLMConfig 
+class LLaNAModel(LlamaModel):
+    config_class = LLaNAConfig 
 
     def __init__(self, config: LlamaConfig):
-        super(NeRFLLMLlamaModel, self).__init__(config)
+        super(LLaNAModel, self).__init__(config)
 
         self.point_backbone_type = config.point_backbone
         logger.info(f"Using {self.point_backbone_type}.")
@@ -138,20 +138,19 @@ class NeRFLLMLlamaModel(LlamaModel):
                     cur_point_idx += 1
             inputs_embeds = torch.stack(new_input_embeds, dim=0)
 
-        return super(NeRFLLMLlamaModel, self).forward(
+        return super(LLaNAModel, self).forward(
             input_ids=None, attention_mask=attention_mask, past_key_values=past_key_values,
             inputs_embeds=inputs_embeds, use_cache=use_cache,
             output_attentions=output_attentions, output_hidden_states=output_hidden_states,
             return_dict=return_dict
         )
 
-
-class NeRFLLMLlamaForCausalLM(LlamaForCausalLM):
-    config_class = NeRFLLMConfig
+class LLaNA(LlamaForCausalLM):
+    config_class = LLaNAConfig
 
     def __init__(self, config):
         super(LlamaForCausalLM, self).__init__(config)
-        self.model = NeRFLLMLlamaModel(config)
+        self.model = LLaNAModel(config)
 
         self.lm_head = nn.Linear(config.hidden_size, config.vocab_size, bias=False)
 
@@ -317,5 +316,5 @@ class NeRFLLMLlamaForCausalLM(LlamaForCausalLM):
                         p.requires_grad = True
                     print("Setting output embeddings and all input embeddings trainable.")
 
-AutoConfig.register("nerfllm", NeRFLLMConfig)
-AutoModelForCausalLM.register(NeRFLLMConfig, NeRFLLMLlamaForCausalLM)
+AutoConfig.register("llana", LLaNAConfig)
+AutoModelForCausalLM.register(LLaNAConfig, LLaNA)

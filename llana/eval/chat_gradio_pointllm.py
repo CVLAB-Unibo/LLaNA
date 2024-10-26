@@ -7,7 +7,6 @@ root_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../'))
 sys.path.append(root_dir)
 from llana.conversation import conv_templates, SeparatorStyle
 from llana.utils import disable_torch_init
-from llana.eval.eval_shapenet_llana import init_model
 from llana.model import *
 from llana.model.utils import KeywordsStoppingCriteria
 import numpy as np
@@ -38,34 +37,34 @@ def change_input_method(input_method):
 def init_model(args):
     # Model
     disable_torch_init()
+    model_name = os.path.expanduser(args.model_name)
 
-    model_path = args.model_name
-    print(f'[INFO] Model name: {model_path}')
+    # * print the model_name (get the basename)
+    print(f'[INFO] Model name: {os.path.basename(model_name)}')
+    logging.warning(f'Model name: {os.path.basename(model_name)}')
 
-    tokenizer = AutoTokenizer.from_pretrained(model_path)
-    model = NeRFLLMLlamaForCausalLM.from_pretrained(model_path, low_cpu_mem_usage=False, use_cache=True, torch_dtype=args.torch_dtype).cuda()
-    model.initialize_tokenizer_nf2vec_config_wo_embedding(tokenizer)
+    tokenizer = AutoTokenizer.from_pretrained(model_name)
+    model = PointLLMLlamaForCausalLM.from_pretrained(model_name, low_cpu_mem_usage=False, use_cache=True).cuda()
+    model.initialize_tokenizer_point_backbone_config_wo_embedding(tokenizer)
 
     model.eval()
 
     mm_use_point_start_end = getattr(model.config, "mm_use_point_start_end", False)
     # Add special tokens ind to model.point_config
-    nf2vec_config = model.get_model().nf2vec_config
+    point_backbone_config = model.get_model().point_backbone_config
     
-    if mm_use_point_start_end:
-        conv_mode = "vicuna_v1_1"
-        conv = conv_templates[conv_mode].copy()
+    conv = conv_templates["vicuna_v1_1"].copy()
 
     stop_str = conv.sep if conv.sep_style != SeparatorStyle.TWO else conv.sep2
     keywords = [stop_str]
     
-    return model, tokenizer, nf2vec_config, keywords, mm_use_point_start_end, conv
+    return model, tokenizer, point_backbone_config, keywords, mm_use_point_start_end, conv
 
-def start_conversation(args, model, tokenizer, nf2vec_config, keywords, mm_use_point_start_end, conv):
-    point_token_len = nf2vec_config['point_token_len']
-    default_point_patch_token = nf2vec_config['default_point_patch_token']
-    default_point_start_token = nf2vec_config['default_point_start_token']
-    default_point_end_token = nf2vec_config['default_point_end_token']
+def start_conversation(args, model, tokenizer, point_backbone_config, keywords, mm_use_point_start_end, conv):
+    point_token_len = point_backbone_config['point_token_len']
+    default_point_patch_token = point_backbone_config['default_point_patch_token']
+    default_point_start_token = point_backbone_config['default_point_start_token']
+    default_point_end_token = point_backbone_config['default_point_end_token']
 
     # The while loop will keep running until the user decides to quit
     print("[INFO] Starting conversation...")
@@ -356,9 +355,13 @@ if __name__ == "__main__":
     # ! Please check 1. the lanuch dir 2. the tmp dir (GRADIO_TEMP_DIR)
     # ! refer to https://www.gradio.app/guides/sharing-your-app#security-and-file-access
     parser = argparse.ArgumentParser()
-    parser.add_argument("--model-name", type=str, default="andreamaduzzi/LLaNA-7B")
+    parser.add_argument("--model-name", type=str, \
+         default="RunsenXu/PointLLM_7B_v1.2")
+
+
     parser.add_argument("--data_path", type=str, default="data/objaverse_data", required=False)
     parser.add_argument("--pointnum", type=int, default=8192)
+
     parser.add_argument("--log_file", type=str, default="serving_workdirs/serving_log.txt")
     parser.add_argument("--tmp_dir", type=str, default="serving_workdirs/tmp")
 
@@ -390,5 +393,5 @@ if __name__ == "__main__":
     # * set env variable GRADIO_TEMP_DIR to args.tmp_dir
     os.environ["GRADIO_TEMP_DIR"] = args.tmp_dir
 
-    model, tokenizer, nf2vec_config, keywords, mm_use_point_start_end, conv = init_model(args)
-    start_conversation(args, model, tokenizer, nf2vec_config, keywords, mm_use_point_start_end, conv)
+    model, tokenizer, point_backbone_config, keywords, mm_use_point_start_end, conv = init_model(args)
+    start_conversation(args, model, tokenizer, point_backbone_config, keywords, mm_use_point_start_end, conv)

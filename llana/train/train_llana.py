@@ -48,7 +48,6 @@ class DataArguments:
     root: str = field(default=None, metadata={"help": "Root of dataset"})
     data_folder: str = field(default=None, metadata={"help": "Name of the folder containing vecs from nf2vec."})
     anno_folder: str = field(default=None, metadata={"help": "Name of the folder containing the conversations on the 3D data."})
-    data_debug_num: int = field(default=0, metadata={"help": "Number of data to use in debug mode. If larger than 0, use debug mode, else use the whole data"})
     split_train_val: bool = field(default=False, metadata={"help": "Whether to split train and val."})
     split_ratio: float = field(default=0.9, metadata={"help": "Ratio of train and val."})
     conversation_types: List[str] = field(default_factory=lambda: ["simple_description"], metadata={"help": "Conversation types to use."})
@@ -58,12 +57,9 @@ class DataArguments:
 class DataArguments_Eval:
     device: int = field(default=0)
     hst_dataset: bool = field(default=False)
-    classification: bool = field(default=False)
     text_data: str = field(default="brief_description")
     img_view: str = field(default="first")
-    prompt_index: int = field(default=3)
     model_name: str = field(default="llava_vicuna-13b")
-    data_debug_num: int = field(default=0, metadata={"help": "Number of data to use in debug mode. If larger than 0, use debug mode, else use the whole data"})
 
 @dataclass
 class TrainingArguments(transformers.TrainingArguments):
