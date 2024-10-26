@@ -5,8 +5,7 @@ accelerate==0.27.2
 transformers==4.40.1
 sentence-transformers==2.7.0
 sentencepiece==0.1.99
-tqdm==4.66.1
-protobuf==3.20.0
+tqdm
 pandas
 torchvision
 wandb
