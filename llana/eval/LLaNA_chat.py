@@ -3,21 +3,15 @@ from transformers import AutoTokenizer
 import torch
 import numpy as np
 import os
+import sys
+root_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../'))
+sys.path.append(root_dir)
 from llana.conversation import conv_templates, SeparatorStyle
 from llana.utils import disable_torch_init
 from llana.model import *
 from llana.model.utils import KeywordsStoppingCriteria
 
 from llana.data import load_objaverse_point_cloud
-
-import os
-
-def load_point_cloud(args):
-    object_id = args.object_id
-    print(f"[INFO] Loading point clouds using object_id: {object_id}")
-    point_cloud = load_objaverse_point_cloud(args.data_name, object_id, pointnum=8192, use_color=True)
-    
-    return object_id, torch.from_numpy(point_cloud).unsqueeze_(0).to(torch.float32)
 
 def load_vec(args):
     object_id = args.object_id
@@ -37,7 +31,7 @@ def init_model(args):
     print(f'[INFO] Model name: {model_path}')
 
     tokenizer = AutoTokenizer.from_pretrained(model_path)
-    model = NeRFLLMLlamaForCausalLM.from_pretrained(model_path, low_cpu_mem_usage=False, use_cache=True, torch_dtype=args.torch_dtype).cuda()
+    model = LLaNA.from_pretrained(model_path, low_cpu_mem_usage=False, use_cache=True, torch_dtype=args.torch_dtype).cuda()
     model.initialize_tokenizer_nf2vec_config_wo_embedding(tokenizer)
 
     model.eval()
@@ -159,11 +153,9 @@ def start_conversation(args, model, tokenizer, nf2vec_config, keywords, mm_use_p
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    #parser.add_argument("--model_name", type=str, default="RunsenXu/PointLLM_7B_v1.2")
-    #parser.add_argument("--model_name", type=str, default="/media/data2/aamaduzzi/results/nerfllm/outputs/NeRFLLM_7B_v1.1_init")
-    parser.add_argument("--model_name", type=str, default="/media/data2/aamaduzzi/results/nerfllm/outputs/NeRFLLM_train_stage2/slurm_script_realmadrid")
-    parser.add_argument("--data_path", type=str, default="data/llana_data/nerfllm")
-    parser.add_argument("--vecs_folder", type=str, default="shapenet_vecs")
+    parser.add_argument("--model_name", type=str, default="outputs/LLaNA_7B_train_stage2_objanerf/slurm_script_31-10-2024_10:23")
+    parser.add_argument("--data_path", type=str, default="data/objanerf_text")
+    parser.add_argument("--vecs_folder", type=str, default="vecs")
     parser.add_argument("--torch_dtype", type=str, default="float16", choices=["float32", "float16", "bfloat16"])
 
     args = parser.parse_args()

@@ -15,44 +15,31 @@ def make_object_nerf_data_module(tokenizer: transformers.PreTrainedTokenizer, da
     """Initialize datasets."""
 
     data_collator = DataCollatorForNeRFTextDataset(tokenizer=tokenizer)
-    if data_args.split_train_val:
-        print("Loading training datasets.")
-        train_dataset = ObjectNeRFDataset(
-            split='train', # * load train split
-            root=data_args.root,
-            data_folder=data_args.data_folder,
-            anno_folder=data_args.anno_folder,
-            conversation_types=data_args.conversation_types,
-            tokenizer=tokenizer,
-            data_args=data_args
-        )
-        print("Done!")
-        
-        # * make a val dataset
-        print("Loading validation datasets.")
-        val_dataset = ObjectNeRFDataset(
-            split='val', # * load train split
-            root=data_args.root,
-            data_folder=data_args.data_folder,
-            anno_folder=data_args.anno_folder,
-            conversation_types=data_args.conversation_types,
-            tokenizer=tokenizer,
-            data_args=data_args
-        )
-        return dict(train_dataset=train_dataset, eval_dataset=val_dataset, data_collator=data_collator)
-    else:
-        # * use all data as training data
-        train_dataset = ObjectNeRFDataset(
-            split='train', # * load train split
-            root=data_args.root,
-            data_folder=data_args.data_folder,
-            anno_folder=data_args.anno_folder,
-            conversation_types=data_args.conversation_types,
-            tokenizer=tokenizer,
-            data_args=data_args
-        )
-        return dict(train_dataset=train_dataset, eval_dataset=None, data_collator=data_collator)
-
+    print("Loading training datasets.")
+    train_dataset = ObjectNeRFDataset(
+        split='train', # * load train split
+        root=data_args.root,
+        data_folder=data_args.data_folder,
+        anno_folder=data_args.anno_folder,
+        conversation_types=data_args.conversation_types,
+        tokenizer=tokenizer,
+        data_args=data_args
+    )
+    print("Done!")
+    
+    # * make a val dataset
+    print("Loading validation datasets.")
+    val_dataset = ObjectNeRFDataset(
+        split='val', # * load train split
+        root=data_args.root,
+        data_folder=data_args.data_folder,
+        anno_folder=data_args.anno_folder,
+        conversation_types=data_args.conversation_types,
+        tokenizer=tokenizer,
+        data_args=data_args
+    )
+    return dict(train_dataset=train_dataset, eval_dataset=val_dataset, data_collator=data_collator)
+    
 class ObjectNeRFDataset(Dataset):
     """Dataset utilities for NeRF-text dataset."""
     def __init__(self,
@@ -65,8 +52,8 @@ class ObjectNeRFDataset(Dataset):
                  data_args=None):
 
         """
-        split: only considered when data_args.split_train_val is True.
-        conversation_types: tuple, used to filter the data, default is ('simple_description'), other types is:
+        split: data split.
+        conversation_types: tuple, used to filter the data, default is ('brief_description'), other types is:
             "detailed_description", "single_round", "multi_round".
         tokenizer: load point clouds only if None
         """
@@ -79,7 +66,7 @@ class ObjectNeRFDataset(Dataset):
         self.tokenizer = tokenizer
         self.split = split 
         if conversation_types is None:
-            self.conversation_types = ["simple_description"]
+            self.conversation_types = ["brief_description"]
         else:
             self.conversation_types = conversation_types
 
@@ -92,10 +79,10 @@ class ObjectNeRFDataset(Dataset):
         
         print(f'= = = = = = = = conversation_types: {self.conversation_types} = = = = = = = =')
         print('conv type: ', self.conversation_types)
-        if self.conversation_types == ["simple_description"]:
-            self.anno_path = os.path.join(self.root, self.split, self.anno_folder, 'conversations_shapenet_text_brief_FULL.json')  # path to conversations: "conversations" or "conversations_rephrase"
+        if self.conversation_types == ["brief_description"]:
+            self.anno_path = os.path.join(self.root, self.split, self.anno_folder, f'conversations_brief.json')  # path to conversations: "conversations" or "conversations_rephrase"
         else:
-            self.anno_path = os.path.join(self.root, self.split, self.anno_folder, 'conversations_shapenet_text_complex_FULL.json')
+            self.anno_path = os.path.join(self.root, self.split, self.anno_folder, f'conversations_complex.json')
         
         # Load the data list from JSON
         print(f"Loading anno file from {self.anno_path}.")
@@ -176,7 +163,7 @@ class ObjectNeRFDataset_Eval(Dataset):
 
         """
         split: only considered when data_args.split_train_val is True.
-        conversation_type: tuple, used to filter the data, default is ('simple_description'), other types is:
+        conversation_type: tuple, used to filter the data, default is ('brief_description'), other types is:
             "detailed_description", "single_round", "multi_round".
         tokenizer: load point clouds only if None
         """
@@ -283,10 +270,10 @@ class ObjectNeRFDataset_Eval(Dataset):
 if __name__ == '__main__':
     import argparse
     parser = argparse.ArgumentParser()
-    parser.add_argument("--root", default="../../data/llana_data/nerfllm", type=str, # symlink to full dataset
+    parser.add_argument("--root", default="../../data/objanerf_text", type=str, # symlink to full dataset
                         help="Path to the root data directory.")
-    parser.add_argument("--data_folder", default="shapenet_vecs", type=str, help="Name of folder with embeddings.")
-    parser.add_argument("--anno_folder", default="shapenet_texts", type=str, help="Name of folder with conversations.")
+    parser.add_argument("--data_folder", default="texts", type=str, help="Name of folder with embeddings.")
+    parser.add_argument("--anno_folder", default="vecs", type=str, help="Name of folder with conversations.")
     parser.add_argument("--split", default='train', type=str, 
                         help="Whether to use the train or validation or test dataset.")
     parser.add_argument("--tokenizer_path", default='outputs/LLaNA_7B_v1.1_init', type=str, help="Path to the tokenizer config file.")
@@ -306,7 +293,7 @@ if __name__ == '__main__':
         split=args.split,
         tokenizer=tokenizer,
         data_args=None,
-        conversation_types=["simple_description"]
+        conversation_types=["brief_description"]
     )
 
     # Example usage

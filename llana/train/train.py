@@ -50,7 +50,7 @@ class DataArguments:
     split_train_val: bool = field(default=False, metadata={"help": "Whether to split train and val."})
     split_ratio: float = field(default=0.9, metadata={"help": "Ratio of train and val."})
     pointnum: int = field(default=8192, metadata={"help": "Number of points."})
-    conversation_types: List[str] = field(default_factory=lambda: ["simple_description"], metadata={"help": "Conversation types to use."})
+    conversation_types: List[str] = field(default_factory=lambda: ["brief_description"], metadata={"help": "Conversation types to use."})
     is_multimodal: bool = True
 
 @dataclass
@@ -105,9 +105,9 @@ def train():
                 model_args.model_name_or_path,
                 cache_dir=training_args.cache_dir,
             )
-        model = PointLLMLlamaForCausalLM._from_config(config)
+        model = LLaNA._from_config(config)
     else:
-        model = PointLLMLlamaForCausalLM.from_pretrained(
+        model = LLaNA.from_pretrained(
             model_args.model_name_or_path,
             cache_dir=training_args.cache_dir,
         )
@@ -155,7 +155,7 @@ def train():
         # * not fix the projection layer
         # * may need to set the embed_tokens to require_grad = True if added new tokens
         # * this is done in initialize_tokenizer_point_backbone_config
-        logger.info("Point projection layer is trainable.")
+        logger.info("embedding projection layer is trainable.")
     else:
         model.get_model().point_proj.requires_grad_(False)
         logger.info("Point prejcetion layer is fixed.")

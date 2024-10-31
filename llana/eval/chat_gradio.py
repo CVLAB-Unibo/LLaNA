@@ -43,7 +43,7 @@ def init_model(args):
     print(f'[INFO] Model name: {model_path}')
 
     tokenizer = AutoTokenizer.from_pretrained(model_path)
-    model = NeRFLLMLlamaForCausalLM.from_pretrained(model_path, low_cpu_mem_usage=False, use_cache=True, torch_dtype=args.torch_dtype).cuda()
+    model = LLaNA.from_pretrained(model_path, low_cpu_mem_usage=False, use_cache=True, torch_dtype=args.torch_dtype).cuda()
     model.initialize_tokenizer_nf2vec_config_wo_embedding(tokenizer)
 
     model.eval()

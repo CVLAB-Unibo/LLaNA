@@ -62,7 +62,7 @@ class PointLLMLlamaModel(LlamaModel):
 
         # * print relevant info with projection layers
         backbone_output_dim = self.point_backbone_config["backbone_output_dim"]
-        logger.info(f"Point backbone output dim: {backbone_output_dim}.")
+        logger.info(f"nerf2vec output dim: {backbone_output_dim}.")
         logger.info(f"Use {self.point_backbone_config['projection_hidden_layer']} projection hiddent layers.")
         if self.point_backbone_config['projection_hidden_layer'] > 0:
             # Add projection layer with linear layers and GELU activation

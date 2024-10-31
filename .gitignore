@@ -10,3 +10,14 @@ push_dataset_to_hub.py
 
 # Byte-compiled
 __pycache__/
+
+# sbatch output files
+*.err
+*.out
+*.txt
+
+# model results
+checkpoints/
+evaluation_results/
+outputs/
+wandb/

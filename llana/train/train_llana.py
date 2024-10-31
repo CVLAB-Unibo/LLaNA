@@ -21,7 +21,7 @@ import os
 import torch
 
 import transformers
-from llana.train.nerfllm_trainer import NeRFLLMTrainer
+from llana.train.llana_trainer import LLaNATrainer
 
 from llana import conversation as conversation_lib
 from llana.model import *
@@ -48,9 +48,8 @@ class DataArguments:
     root: str = field(default=None, metadata={"help": "Root of dataset"})
     data_folder: str = field(default=None, metadata={"help": "Name of the folder containing vecs from nf2vec."})
     anno_folder: str = field(default=None, metadata={"help": "Name of the folder containing the conversations on the 3D data."})
-    split_train_val: bool = field(default=False, metadata={"help": "Whether to split train and val."})
     split_ratio: float = field(default=0.9, metadata={"help": "Ratio of train and val."})
-    conversation_types: List[str] = field(default_factory=lambda: ["simple_description"], metadata={"help": "Conversation types to use."})
+    conversation_types: List[str] = field(default_factory=lambda: ["brief_description"], metadata={"help": "Conversation types to use."})
     is_multimodal: bool = True
 
 @dataclass
@@ -110,12 +109,12 @@ def train():
                 model_args.model_name_or_path,
                 cache_dir=training_args.cache_dir,
             )
-        model = NeRFLLMLlamaForCausalLM._from_config(config)
+        model = LLaNA._from_config(config)
     else:
-        model = NeRFLLMLlamaForCausalLM.from_pretrained(
+        model = LLaNA.from_pretrained(
             model_args.model_name_or_path,
-            cache_dir=training_args.cache_dir,
-            torch_dtype=torch.float16   # TODO: forced by us, the original config value is overwritten
+            cache_dir=training_args.cache_dir
+            #torch_dtype=torch.float16   # TODO: forced by us, the original config value is overwritten
         )
 
     model.config.use_cache = False
@@ -149,10 +148,10 @@ def train():
         # * not fix the projection layer
         # * may need to set the embed_tokens to require_grad = True if added new tokens
         # * this is done in initialize_tokenizer_point_backbone_config
-        logger.info("Point projection layer is trainable.")
+        logger.info("embedding projection layer is trainable.")
     else:
         model.get_model().point_proj.requires_grad_(False)
-        logger.info("Point prejcetion layer is fixed.")
+        logger.info("embedding projection layer is fixed.")
 
     if not training_args.stage_2:
         # * we assume in stage2, llm, point_backbone, and projection layer can be loaded from the model checkpoint
@@ -189,7 +188,7 @@ def train():
     data_module = make_object_nerf_data_module(tokenizer=tokenizer,
                                                     data_args=data_args)
 
-    trainer = NeRFLLMTrainer(model=model,
+    trainer = LLaNATrainer(model=model,
                     tokenizer=tokenizer,
                     args=training_args,
                     **data_module)

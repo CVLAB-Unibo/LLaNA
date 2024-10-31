@@ -20,7 +20,7 @@ def unwrap_model(model: nn.Module) -> nn.Module:
         return model
 
 
-class NeRFLLMTrainer(Trainer):
+class LLaNATrainer(Trainer):
 
     def _save(self, output_dir: Optional[str] = None, state_dict=None):
         if getattr(self.args, 'tune_mm_mlp_adapter', False):
@@ -46,4 +46,4 @@ class NeRFLLMTrainer(Trainer):
             else:
                 torch.save(weight_to_save, os.path.join(output_dir, f'vec_proj.bin'))
 
-        super(NeRFLLMTrainer, self)._save(output_dir, state_dict)
+        super(LLaNATrainer, self)._save(output_dir, state_dict)

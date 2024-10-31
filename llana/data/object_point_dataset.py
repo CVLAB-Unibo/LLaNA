@@ -73,7 +73,7 @@ class ObjectPointCloudDataset(Dataset):
 
         """
         split: only considered when data_args.split_train_val is True.
-        conversation_types: tuple, used to filter the data, default is ('simple_description'), other types is:
+        conversation_types: tuple, used to filter the data, default is ('brief_description'), other types is:
             "detailed_description", "single_round", "multi_round".
         tokenizer: load point clouds only if None
         """
@@ -85,7 +85,7 @@ class ObjectPointCloudDataset(Dataset):
         self.tokenizer = tokenizer
         self.split = split 
         if conversation_types is None:
-            self.conversation_types = ("simple_description",)
+            self.conversation_types = ("brief_description",)
         else:
             self.conversation_types = conversation_types
 
@@ -114,7 +114,7 @@ class ObjectPointCloudDataset(Dataset):
         # Iterate the list, filter those "conversation_type" not in self.conversation_types
         self.list_data_dict = [
             data for data in self.list_data_dict 
-            if data.get('conversation_type', 'simple_description') in self.conversation_types 
+            if data.get('conversation_type', 'brief_description') in self.conversation_types 
             and data.get('object_id') not in filter_ids
         ]
 
@@ -122,7 +122,7 @@ class ObjectPointCloudDataset(Dataset):
         print(f"After filtering, the dataset size is: {len(self.list_data_dict)}.")
         # * print the size of different conversation_type
         for conversation_type in self.conversation_types:
-            print(f"Number of {conversation_type}: {len([data for data in self.list_data_dict if data.get('conversation_type', 'simple_description') == conversation_type])}")
+            print(f"Number of {conversation_type}: {len([data for data in self.list_data_dict if data.get('conversation_type', 'brief_description') == conversation_type])}")
 
         if self.data_args is not None and self.data_args.data_debug_num > 0:
             self.list_data_dict = self.list_data_dict[:self.data_args.data_debug_num]
@@ -223,7 +223,7 @@ class ObjectPointCloudDataset_Eval(Dataset):
 
         """
         split: only considered when data_args.split_train_val is True.
-        conversation_types: tuple, used to filter the data, default is ('simple_description'), other types is:
+        conversation_types: tuple, used to filter the data, default is ('brief_description'), other types is:
             "detailed_description", "single_round", "multi_round".
         tokenizer: load point clouds only if None
         """
@@ -236,7 +236,7 @@ class ObjectPointCloudDataset_Eval(Dataset):
         self.tokenizer = tokenizer
         self.split = split 
         if conversation_type is None:
-            self.conversation_type = ("simple_description",)
+            self.conversation_type = ("brief_description",)
         else:
             self.conversation_type = conversation_type
 
@@ -259,9 +259,9 @@ class ObjectPointCloudDataset_Eval(Dataset):
         else:
             print(f'= = = = = = = = conversation_types: {self.conversation_type} = = = = = = = =')
             if self.conversation_type == "brief_description":
-                self.anno_path = os.path.join(self.anno_root, self.split, self.anno_folder, 'conversations_shapenet_text_brief_FULL_pointllm.json')  # path to conversations: "conversations" or "conversations_rephrase"
+                self.anno_path = os.path.join(self.anno_root, self.split, self.anno_folder, 'conversations_brief_point.json')  # path to conversations: "conversations" or "conversations_rephrase"
             else:
-                self.anno_path = os.path.join(self.anno_root, self.split, self.anno_folder, 'conversations_shapenet_text_complex_FULL_pointllm.json')
+                self.anno_path = os.path.join(self.anno_root, self.split, self.anno_folder, 'conversations_complex_point.json')
             
             # Load the data list from JSON
             print(f"Loading anno file from {self.anno_path}.")

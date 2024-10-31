@@ -13,7 +13,7 @@ from transformers import AutoTokenizer
 import transformers
 from llana.eval.evaluator import start_evaluation
 import sys
-from llana.train.train_nerfllm import DataArguments, DataArguments_Eval
+from llana.train.train_llana import DataArguments, DataArguments_Eval
 from llana import conversation as conversation_lib
 
 
@@ -347,16 +347,16 @@ def main(args):
             with open(anno_file, 'r') as fp:
                 annos = json.load(fp)
         elif args.classification: 
-            anno_file = os.path.join(args.anno_path, 'conversations_shapenet_text_brief_FULL_pointllm.json')
+            anno_file = os.path.join(args.anno_path, 'conversations_brief_point.json')
             with open(anno_file, 'r') as fp:
                 annos = json.load(fp)
         else:
             if args.text_data=="brief_description":
-                anno_file = os.path.join(args.anno_path, 'conversations_shapenet_text_brief_FULL_pointllm.json')
+                anno_file = os.path.join(args.anno_path, 'conversations_brief_point.json')
                 with open(anno_file, 'r') as fp:
                     brief_annos = json.load(fp)
             if  args.text_data == "detailed_description" or args.text_data == "single_round" or args.text_data == "multi_round":
-                anno_file = os.path.join(args.anno_path, 'conversations_shapenet_text_complex_FULL_pointllm.json')
+                anno_file = os.path.join(args.anno_path, 'conversations_complex_point.json')
                 with open(anno_file, 'r') as fp:
                     complex_annos = json.load(fp)
 

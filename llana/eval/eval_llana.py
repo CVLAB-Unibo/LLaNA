@@ -17,53 +17,8 @@ import transformers
 from llana.train.train_llana import DataArguments_Eval
 from llana import conversation as conversation_lib
 
-
-import os
 import json
 import glob
-import re
-
-PROMPT_LISTS = [
-    "What is this?",
-    "This is an object of ",
-    "Caption this 3D model in detail.",
-    "<question>"
-]
-
-name_to_class_id = {
-    "table": "04379243",
-    "car": "02958343",
-    "chair": "03001627",
-    "airplane": "02691156",
-    "sofa": "04256520",
-    "rifle": "04090263",
-    "lamp": "03636649",
-    "watercraft": "04530566",
-    "bench": "02828884",
-    "pistol": "03948459",
-    "loudspeaker": "03691459",
-    "cabinet": "02933112",
-    "display": "03211117",
-    "telephone": "04401088",
-    "phone": "02992529"
-}
-
-class_id_to_name = {v: k for k, v in name_to_class_id.items()}
-
-class_names = list(name_to_class_id)
-
-
-def find_class_ids(model_id):
-    # Get the root directory
-    root_dir = '/media/data2/aamaduzzi/datasets/nerf2vec_renderings_data/data_TRAINED'
-
-    # Use glob to find all directories that end with the model_id
-    model_dirs = glob.glob(f'{root_dir}/*/{model_id}')
-
-    # Extract the class_id from each directory
-    class_ids = [os.path.basename(os.path.dirname(dir)) for dir in model_dirs]
-
-    return class_ids
 
 def init_model(args):
     # Model
@@ -190,7 +145,7 @@ def main(args):
         print(f'[INFO] {args.output_file_path} already exists.')
     else:
         if args.hst_dataset:
-            with open(os.path.join(args.data_path, 'hst.json', 'r')) as fp:
+            with open(os.path.join(args.data_path, 'hst.json'), 'r') as fp:
                 annos = json.load(fp)
         else:
             if args.text_data=="brief_description":
