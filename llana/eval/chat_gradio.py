@@ -7,7 +7,7 @@ root_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../'))
 sys.path.append(root_dir)
 from llana.conversation import conv_templates, SeparatorStyle
 from llana.utils import disable_torch_init
-from llana.eval.eval_shapenet_llana import init_model
+from llana.eval.eval_llana import init_model
 from llana.model import *
 from llana.model.utils import KeywordsStoppingCriteria
 import numpy as np
