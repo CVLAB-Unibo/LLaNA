@@ -7,8 +7,8 @@
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=4
 #SBATCH --cpus-per-task=8
-#SBATCH --error=llana_objanerf_stage1.err
-#SBATCH --output=llana_objanerf_stage1.out
+#SBATCH --error=llana_stage1.err
+#SBATCH --output=llana_stage1.out
 #SBATCH -J llana
 
 # Print SLURM environment variables for debugging
@@ -25,8 +25,9 @@ export NCCL_NET=IB
 
 # load coding environment
 cd $FAST
-source scratch_venv/bin/activate
-export PATH="$PATH:/leonardo_scratch/fast/IscrC_V2Text/scratch_venv/bin"
+module load anaconda3/
+conda activate llana
+export HF_HOME=/leonardo_scratch/fast/IscrC_V2Text/.cache/huggingface
 module load cuda/12.1
 cd dev/LLaNA/
 
@@ -35,12 +36,14 @@ master_port=$((RANDOM % (65535 - 49152 + 1) + 49152))
 filename=$(basename "$0" | cut -f 1 -d '.')
 datetime=$(date '+%d-%m-%Y_%H:%M')
 
-#model_name_or_path=andreamaduzzi/LLaNA-7B_init
-model_name_or_path=/leonardo_work/IscrC_V2Text/results/LLaNA_7B_v1.1_init
-root=data/objanerf_text
+model_name_or_path=andreamaduzzi/LLaNA-7B_init
+# LEONARDO needs the local path of the model
+model_name_or_path=/leonardo_scratch/fast/IscrC_V2Text/.cache/huggingface/hub/models--andreamaduzzi--LLaNA-7B_init/snapshots/fc7a12af408930e59a7c773f7eeb3a037d85200d
+
+root=data/shapenerf_text
 data_folder=vecs
 anno_folder=texts
-output_dir=outputs/LLaNA_7B_train_stage1_objanerf/${filename}_${datetime}
+output_dir=outputs/LLaNA_7B_train_stage1_shapenerf_text/${datetime}
 export WANDB_MODE=offline
 
 torchrun --nnodes=1 --nproc_per_node=4 --master_port=$master_port llana/train/train_mem_llana.py \
@@ -52,7 +55,7 @@ torchrun --nnodes=1 --nproc_per_node=4 --master_port=$master_port llana/train/tr
     --version v1 \
     --model_max_length 2048 \
     --num_train_epochs 3 \
-    --per_device_train_batch_size 16 \
+    --per_device_train_batch_size 4 \
     --per_device_eval_batch_size 4 \
     --gradient_accumulation_steps 1 \
     --evaluation_strategy no \
@@ -68,4 +71,4 @@ torchrun --nnodes=1 --nproc_per_node=4 --master_port=$master_port llana/train/tr
     --fix_llm True \
     --gradient_checkpointing True \
     --report_to wandb \
-    --run_name ${filename}
+    --run_name LLaNA_7B_train_stage1_shapenerf_text_${datetime}

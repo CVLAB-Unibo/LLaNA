@@ -7,8 +7,8 @@
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=4
 #SBATCH --cpus-per-task=8
-#SBATCH --error=llana_objanerf_stage2.err
-#SBATCH --output=llana_objanerf_stage2.out
+#SBATCH --error=llana_stage2.err
+#SBATCH --output=llana_stage2.out
 #SBATCH -J llana
 
 # Print SLURM environment variables for debugging
@@ -35,12 +35,14 @@ master_port=$((RANDOM % (65535 - 49152 + 1) + 49152))
 filename=$(basename "$0" | cut -f 1 -d '.')
 datetime=$(date '+%d-%m-%Y_%H:%M')
 
-#model_name_or_path=outputs/LLaNA_7b_train_stage1/LLaNA_7b_train_stage1    # set path to folder with stage 1 training results
-model_name_or_path=/leonardo_scratch/fast/IscrC_V2Text/dev/LLaNA/outputs/LLaNA_7B_train_stage1_objanerf/slurm_script_30-10-2024_21:55
-root=data/objanerf_text
+# set path to folder with stage 1 training results
+model_name_or_path=outputs/LLaNA_7B_train_stage1_objanerf/slurm_script_30-10-2024_21:55
+model_name_or_path=outputs/LLaNA_7B_train_stage1_shapenerf_text/13-11-2024_17:31 
+
+root=data/shapenerf_text
 data_folder=vecs
 anno_folder=texts
-output_dir=outputs/LLaNA_7B_train_stage2_objanerf/${filename}_${datetime}
+output_dir=outputs/LLaNA_7B_train_stage2_shapenerf_text/${datetime}
 export WANDB_MODE=offline
 
 torchrun --nnodes=1 --nproc_per_node=4 --master_port=$master_port llana/train/train_mem_llana.py \
@@ -73,4 +75,4 @@ torchrun --nnodes=1 --nproc_per_node=4 --master_port=$master_port llana/train/tr
     --fsdp_transformer_layer_cls_to_wrap 'LlamaDecoderLayer' \
     --conversation_types "detailed_description" "single_round" "multi_round" \
     --report_to wandb \
-    --run_name ${filename}
+    --run_name LLaNA_7B_train_stage2_shapenerf_text_${datetime} \

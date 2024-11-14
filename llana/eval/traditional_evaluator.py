@@ -30,10 +30,13 @@ class TraditionalMetricEvaluator():
         self.ground_truths = []
         self.generated_captions = []
 
-        self.sbert_model = SentenceTransformer('all-mpnet-base-v2', device=self.device).to(self.device)
+        #self.sbert_model = SentenceTransformer('all-mpnet-base-v2', device=self.device).to(self.device)
+        self.sbert_model = SentenceTransformer('/leonardo_scratch/fast/IscrC_V2Text/.cache/huggingface/hub/models--sentence-transformers--all-mpnet-base-v2/snapshots/9a3225965996d404b775526de6dbfe85d3368642', device=self.device).to(self.device)
 
-        self.simcse_tokenizer = AutoTokenizer.from_pretrained("princeton-nlp/sup-simcse-roberta-large")
-        self.simcse_model = AutoModel.from_pretrained("princeton-nlp/sup-simcse-roberta-large").to(self.device)
+        #self.simcse_tokenizer = AutoTokenizer.from_pretrained("princeton-nlp/sup-simcse-roberta-large")
+        self.simcse_tokenizer = AutoTokenizer.from_pretrained("/leonardo_scratch/fast/IscrC_V2Text/.cache/huggingface/hub/models--princeton-nlp--sup-simcse-roberta-large/snapshots/96d164d9950b72f4ce179cb1eb3414de0910953f")
+        
+        self.simcse_model = AutoModel.from_pretrained("/leonardo_scratch/fast/IscrC_V2Text/.cache/huggingface/hub/models--princeton-nlp--sup-simcse-roberta-large/snapshots/96d164d9950b72f4ce179cb1eb3414de0910953f").to(self.device)
 
         self.scores = {
             'bleu-1': [],
