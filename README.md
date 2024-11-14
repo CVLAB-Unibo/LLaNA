@@ -40,7 +40,6 @@
 
 <!-- contents with emoji -->
 ## 📋 Contents
-- [🤖 Online Demo](#-online-demo)
 - [🔧 Installation](#-installation)
 - [📦 Data Preparation](#-data-preparation)
 - [👨‍🎓 Training](#-training)
@@ -51,8 +50,6 @@
 - [📚 Related Work](#-related-work)
 - [👏 Acknowledgements](#-acknowledgements)
 
-## 🤖 Online Demo
-LLaNA is online! Try it at [link to hf demo](http://101.230.144.196).
 
 ## 🔧 Installation
 The code provided in this repository has been tested in the following environment:
@@ -122,6 +119,9 @@ where:
 2. vecs/ folder contains the embeddings from nf2vec
 
 ## 👨‍🎓 Training
+<p align="center">
+  <img src="assets/model.png" alt="Model architecture">
+</p>
 
 ### Training Stage 1
 ```bash
