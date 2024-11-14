@@ -119,7 +119,6 @@ def start_generation_caption_qa(model, tokenizer, conv, dataloader, annos, outpu
                 print('= = = = = = = = = = = = = = = = = = = = = = = = = = =')
     
 
-    os.makedirs(output_file_path, exist_ok=True)
     # save the results to a JSON file
     with open(output_file_path, 'w') as fp:
         json.dump(responses, fp, indent=2)
@@ -131,7 +130,7 @@ def start_generation_caption_qa(model, tokenizer, conv, dataloader, annos, outpu
 
 
 def main(args):
-    output_folder = os.path.join(args.output_dir, args.model_name.split('/')[-1])
+    output_folder = os.path.join(args.output_dir, args.model_name.split('/')[-2], args.model_name.split('/')[-1])
     os.makedirs(output_folder, exist_ok=True)
     if args.hst_dataset:
         output_filename = f"hst.json"

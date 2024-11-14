@@ -1,6 +1,5 @@
 # Adopted from https://github.com/lm-sys/FastChat. Below is the original copyright:
 from typing import List, Optional, Tuple
-from cv2 import exp
 
 import torch
 from torch import nn

@@ -44,14 +44,12 @@
 - [🔧 Installation](#-installation)
 - [📦 Data Preparation](#-data-preparation)
 - [👨‍🎓 Training](#-training)
-- [💾 Checkpoints of trained LLaNA](#-checkpoints-of-trained-llana)
 - [🧑‍🏫 Evaluation](#-evaluation)
 - [🗣️ Chatting](#-chatting)
 - [🔗 Citation](#-citation)
 - [📄 License](#-license)
 - [📚 Related Work](#-related-work)
 - [👏 Acknowledgements](#-acknowledgements)
-- [⚖️ Terms of Usage](#-terms-of-usage)
 
 ## 🤖 Online Demo
 LLaNA is online! Try it at [link to hf demo](http://101.230.144.196).
@@ -59,10 +57,8 @@ LLaNA is online! Try it at [link to hf demo](http://101.230.144.196).
 ## 🔧 Installation
 The code provided in this repository has been tested in the following environment:
 - Ubuntu 20.04
-- CUDA 11.7
+- CUDA 12
 - Python 3.10.0
-- PyTorch 2.0.1
-- Transformers 4.40.1
 
 To start: 
 1. Clone this repository.
@@ -76,17 +72,20 @@ conda create -n llana python=3.10 -y
 conda activate llana
 pip install --upgrade pip
 pip install -r requirements.txt
+
+# * for training
+pip install ninja
+pip install flash-attn
 ```
 
 ## 📦 Data Preparation
-In this work, we propose the dataset ShapeNeRF-Text, for training and evaluation on the tasks of NeRF captioning, QA and zero-shot classification.
-This dataset features paired NeRFs and language annotations for ShapeNet objects, in particular for all the 40K NeRFs available in [nf2vec](https://github.com/CVLAB-Unibo/nf2vec) dataset.
+ShapeNeRF-Text provides paired NeRFs and language annotations for ShapeNet objects, in particular for all the 40K NeRFs available in [nf2vec](https://github.com/CVLAB-Unibo/nf2vec) dataset.
 Such data can be downloaded and prepared from the Huggingface Hub:
 ```bash
 python download_shapenerf_text.py
 ```
 
-After the download, the folder structure will be the following:
+After download, the folder structure will be the following:
 ```plaintext
 LLaNA
 ├── data
@@ -122,12 +121,7 @@ where:
 1. texts/ folder contains the language annotations 
 2. vecs/ folder contains the embeddings from nf2vec
 
-Optional: the original NeRF weights from which the embeddings have been computed can be downloaded at this link: COMING-SOON. Such data are not necessary for training and evaluation of LLaNA.
-
 ## 👨‍🎓 Training
-### Download the pre-trained weights of LLAMA, to initialize LLaNA
-1. In the root folder of this repository, create a directory called `checkpoints`.
-2. Download the pre-trained LLAMA weights from TODO ADD LINK and place them inside `checkpoints`.
 
 ### Training Stage 1
 ```bash
@@ -141,14 +135,14 @@ bash scripts/LLaNA_train_stage2.sh
 ```
 
 ### Computational Resources for Training
-LLaNA has been trained on 4 NVIDIA A100 with 64GB of VRAM each. Completing both stages requires ∼1 day of training.
-The weights of the trained models will be saved inside the `checkpoints` directory.
+LLaNA has been trained on 4 NVIDIA A100 with 64GB of VRAM each. Completing both stages requires less than 1 day of training.
+The weights of the trained models will be saved inside the `outputs` directory.
 
-## 💾 Checkpoints of trained LLaNA
-The trained LLaNA checkpoints can be downloaded from TODO ADD LINK. They must be saved inside the `checkpoints` directory.
+## Checkpoints of trained LLaNA
+The trained LLaNA-7b model is hosted on Huggingface Hub [here](https://huggingface.co/andreamaduzzi/LLaNA-7B).
 
 ## 🧑‍🏫 Evaluation
-The evaluation metrics reported in the research paper are computed on the test set of ShapeNeRF-Text, which can be downloaded following the instructions in TODO add link to Data Preparation section.
+The evaluation metrics reported in the research paper are computed on the test set of ShapeNeRF-Text, which can be downloaded following the instructions in the Data Preparation section.
 ### NeRF captioning 
 NeRF captioning task can be evaluated on three different data sources:
 1. Brief textual descriptions, from ShapeNeRF-Text Dataset
@@ -157,19 +151,19 @@ NeRF captioning task can be evaluated on three different data sources:
 
 
 ```bash
-python llana/eval/eval_shapenet_llana.py --model_name PATH_TO_MODEL --text_data brief_description
+python llana/eval/eval_llana.py --model_name andreamaduzzi/LLaNA-7B --text_data brief_description
 ```
 
 ```bash
-python llana/eval/eval_shapenet_llana.py --model_name PATH_TO_MODEL --text_data detailed_description
+python llana/eval/eval_llana.py --model_name andreamaduzzi/LLaNA-7B --text_data detailed_description
 ```
 
 ```bash
-python llana/eval/eval_shapenet_llana.py --model_name PATH_TO_MODEL --hst_dataset
+python llana/eval/eval_llana.py --model_name andreamaduzzi/LLaNA-7B --hst_dataset
 ```
 
 
-```model_name``` provides the path to the model weights, which must be stored inside the `checkpoints` directory.
+```model_name``` provides the path to the model weights, which must be stored inside the `outputs` directory.
 These scripts compute the LLaNA textual predictions for the captioning task. Such output captions will be saved in the directory `evaluation_results` as json files.
 
 Once obtained such textual data, the evaluation metrics reported on the research paper (SentenceBERT, SimCSE, BLEU-1, ROUGE-L, METEOR) can be computed with the following code:
@@ -181,24 +175,13 @@ where  `results_path` provides the path to the json file with the predictions fr
 ### NeRF QA
 NeRF QA task can be evaluated by using the single-round questions and answers, belonging to the test set of ShapeNeRF-Text Dataset.
 ```bash
-python llana/eval/eval_shapenet_llana.py --model_name PATH_TO_MODEL --text_data single_round
+python llana/eval/eval_llana.py --model_name andreamaduzzi/LLaNA-7B --text_data single_round
 ```
 As for the captioning task described before, the quantitative metrics on NeRF QA can be computed in the following way:
 ```bash
-python llana/eval/traditional_evaluator_shapenet.py --results_path <path to results>
+python llana/eval/traditional_evaluator_shapenet.py --results_path PATH_TO_RESULTS
 ```
 where `results_path` provides the path to the json path with the predictions from LLaNA.
-
-### NeRF zero-shot classification
-The classification task is evaluated by asking to LLaNA which is the class of the object provided as input, where the object belongs to the test set of the ShapeNeRF-Text Dataset. 
-
-```bash
-python llana/eval/eval_shapenet_llana.py --model_name PATH_TO_MODEL --classification
-```
-This script provides two output json files:
-1. the first one contains the predictions from LLaNA
-2. the second one contains the classification accuracy.
-
 
 ### Computational Resources for Evaluation
 By default, the evaluation is performed using torch float16 data types. Such choice allows to evaluate LLaNA on a single NVIDIA GeForce RTX 3090 with 24GB of VRAM.
@@ -206,11 +189,11 @@ By default, the evaluation is performed using torch float16 data types. Such cho
 ## 🗣️ Chatting
 You can chat with LLaNA about any NeRF from our dataset by running the following code:
 ```bash
-python llana/eval/LlaNA_chat.py --model_name PATH_TO_MODEL --torch_dtype float16
+python llana/eval/LLaNA_chat.py --model_name andreamaduzzi/LLaNA-7B --torch_dtype float16
 ```
 
 ### Computational Resources for Chatting
-As for the NeRF Captioning-QA and Classification Tasks, using torch.float16 as data type, the inference of the model can be executed on a single NVIDIA GeForce RTX 3090 with 24GB of VRAM.
+As for the NeRF Captioning-QA Tasks, using torch.float16 as data type, the inference of the model can be executed on a single NVIDIA GeForce RTX 3090 with 24GB of VRAM.
 
 ## 🔗 Citation
 

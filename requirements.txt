@@ -1,11 +1,9 @@
-torch==2.2.0+cu121
-ninja==1.11.1.1
-flash-attn==2.5.3
-accelerate==0.27.2
-transformers==4.40.1
-sentence-transformers==2.7.0
-sentencepiece==0.1.99
-open3d==0.16.0
+torch>=2.0
+accelerate
+transformers
+sentence-transformers
+sentencepiece
+open3d
 tqdm
 pandas
 torchvision
@@ -16,3 +14,4 @@ pydantic
 gradio
 traitlets
 ipython
+easyidict
