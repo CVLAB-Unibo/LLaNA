@@ -3,15 +3,18 @@ master_port=$((RANDOM % (65535 - 49152 + 1) + 49152))
 filename=$(basename "$0" | cut -f 1 -d '.')
 datetime=$(date '+%d-%m-%Y_%H:%M')
 
-#model_name_or_path=andreamaduzzi/LLaNA-7B_init
-model_name_or_path=/leonardo_work/IscrC_V2Text/results/LLaNA_7B_v1.1_init
-root=data/objanerf_text
+model_name_or_path=andreamaduzzi/LLaNA-7B_init
+# LEONARDO needs the local path of the model
+model_name_or_path=/leonardo_scratch/fast/IscrC_V2Text/.cache/huggingface/hub/models--andreamaduzzi--LLaNA-7B_init/snapshots/fc7a12af408930e59a7c773f7eeb3a037d85200d
+cache_dir=/leonardo_scratch/fast/IscrC_V2Text/.cache/huggingface/hub
+root=data/shapenerf_text
 data_folder=vecs
 anno_folder=texts
-output_dir=outputs/LLaNA_7B_train_stage1_objanerf/${filename}_${datetime}
+output_dir=outputs/LLaNA_7B_train_stage1_shapenerf_text/${datetime}
 
-torchrun --nnodes=1 --nproc_per_node=3 --master_port=$master_port llana/train/train_mem_llana.py \
+torchrun --nnodes=1 --nproc_per_node=4 --master_port=$master_port llana/train/train_mem_llana.py \
     --model_name_or_path $model_name_or_path \
+    --cache_dir $cache_dir \
     --root $root \
     --data_folder $data_folder \
     --anno_folder $anno_folder \
@@ -35,4 +38,4 @@ torchrun --nnodes=1 --nproc_per_node=3 --master_port=$master_port llana/train/tr
     --fix_llm True \
     --gradient_checkpointing True \
     --report_to wandb \
-    --run_name ${filename}
+    --run_name LLaNA_7B_train_stage1_shapenerf_text_${datetime} \

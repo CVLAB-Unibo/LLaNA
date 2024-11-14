@@ -81,17 +81,15 @@ pip install -r requirements.txt
 ## 📦 Data Preparation
 In this work, we propose the dataset ShapeNeRF-Text, for training and evaluation on the tasks of NeRF captioning, QA and zero-shot classification.
 This dataset features paired NeRFs and language annotations for ShapeNet objects, in particular for all the 40K NeRFs available in [nf2vec](https://github.com/CVLAB-Unibo/nf2vec) dataset.
-Such data can be downloaded from the Huggingface Hub:
+Such data can be downloaded and prepared from the Huggingface Hub:
 ```bash
-python download_shapenerf_text.py --splits SPLITS
+python download_shapenerf_text.py
 ```
-where ```SPLITS``` will be the list of splits to download, to be chosen among 'train', 'val', 'test'.
 
 After the download, the folder structure will be the following:
 ```plaintext
 LLaNA
 ├── data
-|   ├── hst.json
 │   ├── shapenerf_text
 │   │   ├── train
 │   │   │    ├── texts
@@ -117,13 +115,14 @@ LLaNA
 |   |   |    |    ├── <model_id>.npy
 |   |   |    |    ├── ...
 |   |   |    |    ├── <model_id>.npy
+|   |   ├── hst_dataset_filtered.json
 ```
 
 where:
 1. texts/ folder contains the language annotations 
 2. vecs/ folder contains the embeddings from nf2vec
 
-Optional: the original NeRF weights from which the embeddings have been computed can be downloaded at this link: TODO ADD LINK. Such data are not necessary for training and evaluation of LLaNA.
+Optional: the original NeRF weights from which the embeddings have been computed can be downloaded at this link: COMING-SOON. Such data are not necessary for training and evaluation of LLaNA.
 
 ## 👨‍🎓 Training
 ### Download the pre-trained weights of LLAMA, to initialize LLaNA

@@ -102,7 +102,7 @@ def train():
     training_args.log_level = "info" # * default is passive(warning)
     # * build logger
     logger = build_logger(__name__, training_args.output_dir + '/train.log')
-
+    
     if training_args.model_debug:
         # * do not load checkpoint, load from config
         config = transformers.AutoConfig.from_pretrained(
@@ -112,8 +112,7 @@ def train():
         model = LLaNA._from_config(config)
     else:
         model = LLaNA.from_pretrained(
-            model_args.model_name_or_path,
-            cache_dir=training_args.cache_dir
+            pretrained_model_name_or_path=model_args.model_name_or_path,
             #torch_dtype=torch.float16   # TODO: forced by us, the original config value is overwritten
         )
 
@@ -158,7 +157,7 @@ def train():
         model.initialize_tokenizer_nf2vec_config(tokenizer=tokenizer, device=training_args.device, fix_llm=training_args.fix_llm)
     else:
         # * stage2
-        model.initialize_tokenizer_nf2vec_config_wo_embedding(tokenizer=tokenizer)  # TODO: debug this function
+        model.initialize_tokenizer_nf2vec_config_wo_embedding(tokenizer=tokenizer)
     
     nf2vec_config = model.get_model().nf2vec_config
 
