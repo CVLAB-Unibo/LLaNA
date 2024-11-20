@@ -51,7 +51,6 @@
 - [🧑‍🏫 Evaluation](#-evaluation)
 - [🗣️ Chatting](#-chatting)
 - [🔗 Citation](#-citation)
-- [📄 License](#-license)
 - [📚 Related Work](#-related-work)
 - [👏 Acknowledgements](#-acknowledgements)
 
@@ -206,11 +205,6 @@ If you find our work helpful, please consider starring this repo 🌟 and cite:
   month        = "Dec."
 } 
 ```
-
-## 📄 License
-<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/80x15.png" /></a>
-<br />
-This work is under the <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
 
 ## 📚 Related Work
 - [PointLLM](https://arxiv.org/pdf/2308.16911): Our codebase is built upon this work.
