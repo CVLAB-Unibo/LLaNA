@@ -3,7 +3,7 @@
 <h1 align="center"><img src="assets/llana_icon-removebg-preview.png" align="center" width="8.0%" style="vertical-align: middle">LLaNA: Large Language and NeRF Assistant (NeurIPS&nbsp;2024)</h1> 
 
   <p align="center">
-    <a href='https://andreamaduzzi.github.io/' target='_blank'>Andrea Amaduzzi</a>&emsp;
+    <a href='https://andreamaduzzi.github.io/' target='_blank'>Andrea Amaduzzi (*)</a>&emsp;
     <a href='https://www.unibo.it/sitoweb/pierluigi.zama' target='_blank'>Pierluigi Zama Ramirez</a>&emsp;
     <a href='https://www.unibo.it/sitoweb/giuseppe.lisanti' target='_blank'>Giuseppe Lisanti</a>&emsp;
     <a href='https://www.unibo.it/sitoweb/samuele.salti' target='_blank'>Samuele Salti</a>&emsp;
@@ -29,6 +29,15 @@
   <a href="https://github.com/CVLAB-Unibo/LLaNA/stargazers" target='_blank'>
     <img src="https://img.shields.io/github/stars/CVLAB-Unibo/LLaNA?style=social" style="margin-right: 5px;">
   </a>
+</p>
+<p>
+    <div style="text-align: center;">
+    <span style="color: red; font-weight: bold">
+        (*) I am currently seeking internship opportunities! 
+        <br> Feel free to contact me at 
+        <a href="mailto:andrea.amaduzzi4@unibo.it">andrea.amaduzzi4@unibo.it</a> or connect with me on 
+        <a href="https://x.com/andrea_amaduzzi" target="_blank">Twitter</a>.
+    </span>
 </p>
 </p>
 
