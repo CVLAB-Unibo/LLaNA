@@ -15,19 +15,16 @@
 
 <p align="center">
   <a href="https://arxiv.org/abs/2406.11840" target='_**blank**'>
-    <img src="https://img.shields.io/badge/Paper-PDF-red?" style="margin-right: 5px;">
+    <img src="https://img.shields.io/badge/Paper-PDF-red?" style="margin-right: 10px;">
   </a> 
   <a href="https://andreamaduzzi.github.io/llana/" target='_blank'>
-    <img src="https://img.shields.io/badge/Project-Page-red" style="margin-right: 5px;">
-  </a>
-  <a href="link to hf demo" target='_blank'>
-    <img src="https://img.shields.io/badge/Demo-&#x1f917-red" style="margin-right: 5px;">
+    <img src="https://img.shields.io/badge/Project-Page-red" style="margin-right: 10px;">
   </a>
   <a href="" target='_blank'>
-    <img src="https://visitor-badge.laobi.icu/badge?page_id=CVLAB-Unibo.LLaNA&left_color=gray&right_color=red" style="margin-right: 5px;">
+    <img src="https://visitor-badge.laobi.icu/badge?page_id=CVLAB-Unibo.LLaNA&left_color=gray&right_color=red" style="margin-right: 10px;">
   </a>
   <a href="https://github.com/CVLAB-Unibo/LLaNA/stargazers" target='_blank'>
-    <img src="https://img.shields.io/github/stars/CVLAB-Unibo/LLaNA?style=social" style="margin-right: 5px;">
+    <img src="https://img.shields.io/github/stars/CVLAB-Unibo/LLaNA?style=social" style="margin-right: 10px;">
   </a>
 </p>
 <p>
