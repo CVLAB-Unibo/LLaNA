@@ -1,6 +1,6 @@
 <br>
 <p align="center">
-<h1 align="center"><img src="assets/llana_icon-removebg-preview.png" align="center" width="5.0%" style="vertical-align: middle">LLaNA: Large Language and NeRF Assistant (NeurIPS&nbsp;2024)</h1> 
+<h1 align="center"><img src="assets/llana_icon-removebg-preview.png" align="center" width="8.0%" style="vertical-align: middle">LLaNA: Large Language and NeRF Assistant (NeurIPS&nbsp;2024)</h1> 
 
   <p align="center">
     <a href='https://andreamaduzzi.github.io/' target='_blank'>Andrea Amaduzzi</a>&emsp;
