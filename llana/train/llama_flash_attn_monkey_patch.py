@@ -1,4 +1,4 @@
-# Adopted from https://github.com/lm-sys/FastChat. Below is the original copyright:
+# Adopted from https://github.com/OpenRobotLab/PointLLM/.
 from typing import List, Optional, Tuple
 
 import torch

@@ -1,11 +1,11 @@
 import os
 import json
-import torch
-import numpy as np
-
 import copy
-import transformers
+
+import numpy as np
+import torch
 from torch.utils.data import Dataset
+import transformers
 
 from .utils import *
 
@@ -75,29 +75,34 @@ class ObjectNeRFDataset(Dataset):
         self.nf2vec_config = data_args.nf2vec_config if data_args is not None else None
         self.vec_indicator = '<point>'
         self.data_path = os.path.join(self.root, self.split, self.data_folder)  # path to vecs
-        #self.anno_path = os.path.join(self.root, self.split, self.anno_folder, 'conversations_rephrase.json')  # path to conversations: "conversations" or "conversations_rephrase"
         
+        # read text annotations
         print(f'= = = = = = = = conversation_types: {self.conversation_types} = = = = = = = =')
-        print('conv type: ', self.conversation_types)
-        if self.conversation_types == ["brief_description"]:
-            self.anno_path = os.path.join(self.root, self.split, self.anno_folder, f'conversations_brief.json')  # path to conversations: "conversations" or "conversations_rephrase"
-        else:
-            self.anno_path = os.path.join(self.root, self.split, self.anno_folder, f'conversations_complex.json')
+
+        self.list_data_dict = []
+        # Load brief descriptions if specified
+        if "brief_description" in self.conversation_types:
+            brief_anno_path = os.path.join(self.root, self.split, self.anno_folder, 'conversations_brief.json')
+            print(f"Loading brief descriptions from {brief_anno_path}.")
+            with open(brief_anno_path, "r") as json_file:
+                self.list_data_dict.extend(json.load(json_file))
+
+        # Load complex conversations if specified
+        complex_types = {"detailed_description", "single_round", "multi_round"}
+        if any(conv_type in self.conversation_types for conv_type in complex_types):
+            complex_anno_path = os.path.join(self.root, self.split, self.anno_folder, 'conversations_complex.json')
+            print(f"Loading complex conversations from {complex_anno_path}.")
+            with open(complex_anno_path, "r") as json_file:
+                self.list_data_dict.extend(json.load(json_file))
         
-        # Load the data list from JSON
-        print(f"Loading anno file from {self.anno_path}.")
-        with open(self.anno_path, "r") as json_file:
-            self.list_data_dict = json.load(json_file)
-        
-        # * print the conversations_type
-        print(f"Using conversation_type: {self.conversation_types}") 
-        # * print before filtering
-        print(f"The dataset size is: {len(self.list_data_dict)}.")
+        # * extract the desired conversations, belonging to conversation_types
+        self.list_data_dict = [data for data in self.list_data_dict if data['conversation_type'] in self.conversation_types ]
 
         # * print the size of different conversation_type
+        print(f'*******SPLIT: {self.split}*******')
         for conversation_type in self.conversation_types:
             print(f"Number of {conversation_type}: {len([data for data in self.list_data_dict if data['conversation_type'] == conversation_type])}")
-
+        print('Full dataset size: ', len(self.list_data_dict))
  
     def _load_vec(self, object_id):
         filename = f"{object_id}.npy"  
@@ -123,7 +128,7 @@ class ObjectNeRFDataset(Dataset):
                 )
                 return data_dict
 
-            sources = preprocess_multimodal_point_cloud(    # using the same code as PointLLM to add placeholders for vecs inside the text
+            sources = preprocess_multimodal_point_cloud(    # adding placeholders for vecs inside the text
                 copy.deepcopy([e["conversations"] for e in sources]), self.nf2vec_config, point_indicator=self.vec_indicator)
         else:
             sources = copy.deepcopy([e["conversations"] for e in sources])
@@ -188,7 +193,7 @@ class ObjectNeRFDataset_Eval(Dataset):
         
         if hst_dataset:
             # read JSON
-            self.anno_path = os.path.join(self.root, 'hst.json')
+            self.anno_path = os.path.join(self.root, 'hst_dataset_filtered.json')
             # Load the data list from JSON
             print(f"Loading anno file from {self.anno_path}.")
             with open(self.anno_path, "r") as json_file:
@@ -242,7 +247,7 @@ class ObjectNeRFDataset_Eval(Dataset):
                 )
                 return data_dict
 
-            sources = preprocess_multimodal_point_cloud(    # using the same code as PointLLM to add placeholders for vecs inside the text
+            sources = preprocess_multimodal_point_cloud(    # adding placeholders for vecs inside the text
                 copy.deepcopy([e["conversations"] for e in sources]), self.nf2vec_config, point_indicator=self.vec_indicator)
         else:
             sources = copy.deepcopy([e["conversations"] for e in sources])
@@ -270,13 +275,13 @@ class ObjectNeRFDataset_Eval(Dataset):
 if __name__ == '__main__':
     import argparse
     parser = argparse.ArgumentParser()
-    parser.add_argument("--root", default="../../data/objanerf_text", type=str, # symlink to full dataset
+    parser.add_argument("--root", default="../../data/shapenerf_text", type=str, # symlink to full dataset
                         help="Path to the root data directory.")
     parser.add_argument("--data_folder", default="texts", type=str, help="Name of folder with embeddings.")
     parser.add_argument("--anno_folder", default="vecs", type=str, help="Name of folder with conversations.")
     parser.add_argument("--split", default='train', type=str, 
                         help="Whether to use the train or validation or test dataset.")
-    parser.add_argument("--tokenizer_path", default='outputs/LLaNA_7B_v1.1_init', type=str, help="Path to the tokenizer config file.")
+    parser.add_argument("--tokenizer_path", default='andreamaduzzi/LLaNA_7B_v1.1_init', type=str, help="Path to the tokenizer config file.")
     
     args = parser.parse_args()
 

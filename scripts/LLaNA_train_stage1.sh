@@ -4,13 +4,12 @@ filename=$(basename "$0" | cut -f 1 -d '.')
 datetime=$(date '+%d-%m-%Y_%H:%M')
 
 model_name_or_path=andreamaduzzi/LLaNA-7B_init
-# LEONARDO needs the local path of the model
 root=data/shapenerf_text
 data_folder=vecs
 anno_folder=texts
 output_dir=outputs/LLaNA_7B_train_stage1_shapenerf_text/${datetime}
 
-torchrun --nnodes=1 --nproc_per_node=2 --master_port=$master_port llana/train/train_mem_llana.py \
+torchrun --nnodes=1 --nproc_per_node=4 --master_port=$master_port llana/train/train_mem_llana.py \
     --model_name_or_path $model_name_or_path \
     --root $root \
     --data_folder $data_folder \
@@ -19,8 +18,8 @@ torchrun --nnodes=1 --nproc_per_node=2 --master_port=$master_port llana/train/tr
     --version v1 \
     --model_max_length 2048 \
     --num_train_epochs 3 \
-    --per_device_train_batch_size 1 \
-    --per_device_eval_batch_size 1 \
+    --per_device_train_batch_size 16 \
+    --per_device_eval_batch_size 4 \
     --gradient_accumulation_steps 1 \
     --evaluation_strategy no \
     --save_strategy no \

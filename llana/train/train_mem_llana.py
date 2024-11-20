@@ -1,6 +1,4 @@
-# Adopted from https://github.com/lm-sys/FastChat. Below is the original copyright:
-# Adopted from tatsu-lab@stanford_alpaca. Below is the original copyright:
-# Make it more memory efficient by monkey patching the LLaMA model with FlashAttn.
+# Adopted from https://github.com/OpenRobotLab/PointLLM/. 
 
 import os
 import sys

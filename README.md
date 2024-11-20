@@ -54,7 +54,7 @@
 ## 🔧 Installation
 The code provided in this repository has been tested in the following environment:
 - Ubuntu 20.04
-- CUDA 12
+- CUDA 12.1
 - Python 3.10.0
 
 To start: 
@@ -72,7 +72,7 @@ pip install -r requirements.txt
 
 # * for training
 pip install ninja
-pip install flash-attn
+pip install flash-attn==2.5.6
 ```
 
 ## 📦 Data Preparation
@@ -139,47 +139,40 @@ LLaNA has been trained on 4 NVIDIA A100 with 64GB of VRAM each. Completing both 
 The weights of the trained models will be saved inside the `outputs` directory.
 
 ## Checkpoints of trained LLaNA
-The trained LLaNA-7b model is hosted on Huggingface Hub [here](https://huggingface.co/andreamaduzzi/LLaNA-7B).
+The trained LLaNA-7b model is hosted on Huggingface Hub [here](https://huggingface.co/andreamaduzzi/LLaNA-7B). The weights are automatically downloaded when needed, while running the training or evaluation scripts.
 
 ## 🧑‍🏫 Evaluation
 The evaluation metrics reported in the research paper are computed on the test set of ShapeNeRF-Text, which can be downloaded following the instructions in the Data Preparation section.
 ### NeRF captioning 
 NeRF captioning task can be evaluated on three different data sources:
 1. Brief textual descriptions, from ShapeNeRF-Text Dataset
-2. Detailed textual descriptions, from ShapeNeRF-Text Dataset
-3. GPT2Shape HST, from [Looking at words and points with attention](https://github.com/AndreAmaduzzi/CrossCoherence)
-
+2. Brief textual descriptions from GPT2Shape HST, from [Looking at words and points with attention](https://github.com/AndreAmaduzzi/CrossCoherence)
+3. Detailed textual descriptions, from ShapeNeRF-Text Dataset
 
 ```bash
 python llana/eval/eval_llana.py --model_name andreamaduzzi/LLaNA-7B --text_data brief_description
 ```
 
 ```bash
-python llana/eval/eval_llana.py --model_name andreamaduzzi/LLaNA-7B --text_data detailed_description
-```
-
-```bash
 python llana/eval/eval_llana.py --model_name andreamaduzzi/LLaNA-7B --hst_dataset
 ```
 
-
-```model_name``` provides the path to the model weights, which must be stored inside the `outputs` directory.
-These scripts compute the LLaNA textual predictions for the captioning task. Such output captions will be saved in the directory `evaluation_results` as json files.
-
-Once obtained such textual data, the evaluation metrics reported on the research paper (SentenceBERT, SimCSE, BLEU-1, ROUGE-L, METEOR) can be computed with the following code:
 ```bash
-python llana/eval/traditional_evaluator_shapenet.py --results_path PATH_TO_RESULTS
+python llana/eval/eval_llana.py --model_name andreamaduzzi/LLaNA-7B --text_data detailed_description
 ```
-where  `results_path` provides the path to the json file with the predictions from LLaNA.
+
+```model_name``` provides the path to the model weights.
+These scripts compute the LLaNA textual predictions for the captioning task. Such output captions will be saved in the directory `evaluation_results` as json files.
 
 ### NeRF QA
 NeRF QA task can be evaluated by using the single-round questions and answers, belonging to the test set of ShapeNeRF-Text Dataset.
 ```bash
 python llana/eval/eval_llana.py --model_name andreamaduzzi/LLaNA-7B --text_data single_round
 ```
-As for the captioning task described before, the quantitative metrics on NeRF QA can be computed in the following way:
+
+### Computation of the evaluation metrics
 ```bash
-python llana/eval/traditional_evaluator_shapenet.py --results_path PATH_TO_RESULTS
+python llana/eval/traditional_evaluator.py --results_path PATH_TO_RESULTS
 ```
 where `results_path` provides the path to the json path with the predictions from LLaNA.
 
@@ -189,7 +182,7 @@ By default, the evaluation is performed using torch float16 data types. Such cho
 ## 🗣️ Chatting
 You can chat with LLaNA about any NeRF from our dataset by running the following code:
 ```bash
-python llana/eval/LLaNA_chat.py --model_name andreamaduzzi/LLaNA-7B --torch_dtype float16
+python llana/eval/LLaNA_chat.py --model_name andreamaduzzi/LLaNA-7B
 ```
 
 ### Computational Resources for Chatting
@@ -210,7 +203,6 @@ If you find our work helpful, please consider starring this repo 🌟 and cite:
 ```
 
 ## 📄 License
-TODO: correggi licenza
 <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/80x15.png" /></a>
 <br />
 This work is under the <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.

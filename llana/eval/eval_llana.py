@@ -1,24 +1,26 @@
 import argparse
-import torch
-from torch.utils.data import DataLoader
+import json
 import os
 import sys
+import torch
+from torch.utils.data import DataLoader
+from tqdm import tqdm
+from transformers import AutoTokenizer
+import transformers
+
 root_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../'))
 sys.path.append(root_dir)
+
 from llana.conversation import conv_templates, SeparatorStyle
 from llana.utils import disable_torch_init
 from llana.model import *
 from llana.model.utils import KeywordsStoppingCriteria
 from llana.data import ObjectNeRFDataset_Eval
 from llana.data.utils import DataCollatorForNeRFTextDataset_Eval
-from tqdm import tqdm
-from transformers import AutoTokenizer
-import transformers
 from llana.train.train_llana import DataArguments_Eval
 from llana import conversation as conversation_lib
 
 import json
-import glob
 
 def init_model(args):
     # Model
@@ -141,10 +143,10 @@ def main(args):
     args.device = torch.device(f'cuda:{args.device}')
 
     if os.path.exists(output_file_path):
-        print(f'[INFO] {args.output_file_path} already exists.')
+        print(f'[INFO] {output_file_path} already exists.')
     else:
         if args.hst_dataset:
-            with open(os.path.join(args.data_path, 'hst.json'), 'r') as fp:
+            with open(os.path.join(args.data_path, 'hst_dataset_filtered.json'), 'r') as fp:
                 annos = json.load(fp)
         else:
             if args.text_data=="brief_description":

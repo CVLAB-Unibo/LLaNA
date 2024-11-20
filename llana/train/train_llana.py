@@ -1,5 +1,6 @@
+# Adopted from https://github.com/OpenRobotLab/PointLLM/. Below is the original copyright:
 #  Adopted from https://github.com/lm-sys/FastChat. Below is the original copyright:
-# Adopted from tatsu-lab@stanford_alpaca. Below is the original copyright:
+#   Adopted from tatsu-lab@stanford_alpaca. Below is the original copyright:
 #    Copyright 2023 Rohan Taori, Ishaan Gulrajani, Tianyi Zhang, Yann Dubois, Xuechen Li
 #
 #    Licensed under the Apache License, Version 2.0 (the "License");
@@ -112,8 +113,7 @@ def train():
         model = LLaNA._from_config(config)
     else:
         model = LLaNA.from_pretrained(
-            pretrained_model_name_or_path=model_args.model_name_or_path,
-            #torch_dtype=torch.float16   # TODO: forced by us, the original config value is overwritten
+            pretrained_model_name_or_path=model_args.model_name_or_path
         )
 
     model.config.use_cache = False

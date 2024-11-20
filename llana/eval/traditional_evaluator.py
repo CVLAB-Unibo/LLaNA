@@ -2,10 +2,8 @@ import argparse
 import json
 import os
 import random
-random.seed(0)
 
 import nltk
-nltk.download('wordnet')
 from nltk.translate.bleu_score import sentence_bleu, SmoothingFunction
 from nltk.translate.meteor_score import meteor_score
 from rouge import Rouge
@@ -13,6 +11,9 @@ from sentence_transformers import SentenceTransformer, util
 from scipy.spatial.distance import cosine
 from transformers import AutoModel, AutoTokenizer
 import torch
+
+random.seed(0)
+#nltk.download('wordnet')
 
 
 import numpy as np
@@ -30,13 +31,12 @@ class TraditionalMetricEvaluator():
         self.ground_truths = []
         self.generated_captions = []
 
-        #self.sbert_model = SentenceTransformer('all-mpnet-base-v2', device=self.device).to(self.device)
-        self.sbert_model = SentenceTransformer('/leonardo_scratch/fast/IscrC_V2Text/.cache/huggingface/hub/models--sentence-transformers--all-mpnet-base-v2/snapshots/9a3225965996d404b775526de6dbfe85d3368642', device=self.device).to(self.device)
-
-        #self.simcse_tokenizer = AutoTokenizer.from_pretrained("princeton-nlp/sup-simcse-roberta-large")
-        self.simcse_tokenizer = AutoTokenizer.from_pretrained("/leonardo_scratch/fast/IscrC_V2Text/.cache/huggingface/hub/models--princeton-nlp--sup-simcse-roberta-large/snapshots/96d164d9950b72f4ce179cb1eb3414de0910953f")
-        
-        self.simcse_model = AutoModel.from_pretrained("/leonardo_scratch/fast/IscrC_V2Text/.cache/huggingface/hub/models--princeton-nlp--sup-simcse-roberta-large/snapshots/96d164d9950b72f4ce179cb1eb3414de0910953f").to(self.device)
+        print('Loading SentenceBERT Model...')
+        self.sbert_model = SentenceTransformer('all-mpnet-base-v2', device=self.device).to(self.device)
+        print('Loading SimCSE Tokenizer...')
+        self.simcse_tokenizer = AutoTokenizer.from_pretrained("princeton-nlp/sup-simcse-roberta-large")
+        print('Loading SimCSE Model...')
+        self.simcse_model = AutoModel.from_pretrained("princeton-nlp/sup-simcse-roberta-large").to(self.device)
 
         self.scores = {
             'bleu-1': [],
@@ -165,10 +165,9 @@ def start_evaluation(results, output_dir, output_file,
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-
     parser.add_argument("--results_path", type=str, default="evaluation_results/llava_vicuna-13b/single_round_Shapenet_prompt3.json", help="Path to the results file.")
     parser.add_argument("--output_dir", type=str, default=None, help="Path to the output directory.")
-    parser.add_argument("--device", type=int, default=2, help="idx of the gpu to use")
+    parser.add_argument("--device", type=int, default=0, help="idx of the gpu to use")
 
     args = parser.parse_args()
 

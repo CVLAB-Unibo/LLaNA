@@ -1,17 +1,18 @@
 import argparse
-from transformers import AutoTokenizer
-import torch
-import numpy as np
 import os
 import sys
+
+import numpy as np
+import torch
+from transformers import AutoTokenizer
+
 root_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../'))
 sys.path.append(root_dir)
+
 from llana.conversation import conv_templates, SeparatorStyle
-from llana.utils import disable_torch_init
 from llana.model import *
 from llana.model.utils import KeywordsStoppingCriteria
-
-from llana.data import load_objaverse_point_cloud
+from llana.utils import disable_torch_init
 
 def load_vec(args):
     object_id = args.object_id
@@ -116,7 +117,6 @@ def start_conversation(args, model, tokenizer, nf2vec_config, keywords, mm_use_p
             conv.append_message(conv.roles[0], qs)
             conv.append_message(conv.roles[1], None)
             prompt = conv.get_prompt()
-            print('prompt:', prompt)
             inputs = tokenizer([prompt])
 
             input_ids = torch.as_tensor(inputs.input_ids).cuda()
@@ -125,7 +125,6 @@ def start_conversation(args, model, tokenizer, nf2vec_config, keywords, mm_use_p
             stop_str = keywords[0]
 
             with torch.inference_mode():
-                print('vecs:', vecs.shape)
                 output_ids = model.generate(
                     input_ids,
                     vecs=vecs,
@@ -153,8 +152,8 @@ def start_conversation(args, model, tokenizer, nf2vec_config, keywords, mm_use_p
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--model_name", type=str, default="outputs/LLaNA_7B_train_stage2_objanerf/slurm_script_31-10-2024_10:23")
-    parser.add_argument("--data_path", type=str, default="data/objanerf_text")
+    parser.add_argument("--model_name", type=str, default="")
+    parser.add_argument("--data_path", type=str, default="data/shapenerf_text")
     parser.add_argument("--vecs_folder", type=str, default="vecs")
     parser.add_argument("--torch_dtype", type=str, default="float16", choices=["float32", "float16", "bfloat16"])
 

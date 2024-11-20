@@ -3,13 +3,11 @@ master_port=$((RANDOM % (65535 - 49152 + 1) + 49152))
 filename=$(basename "$0" | cut -f 1 -d '.')
 datetime=$(date '+%d-%m-%Y_%H:%M')
 
-model_name_or_path=outputs/LLaNA_7B_train_stage1_shapenerf_text/13-11-2024_17:31    # set path to folder with stage 1 training results
-#model_name_or_path=/leonardo_scratch/fast/IscrC_V2Text/dev/LLaNA/outputs/LLaNA_7B_train_stage1_objanerf/slurm_script_30-10-2024_21:55
+model_name_or_path= ### set path to folder with stage 1 training results
 root=data/shapenerf_text
 data_folder=vecs
 anno_folder=texts
 output_dir=outputs/LLaNA_7B_train_stage2_shapenerf_text/${datetime}
-point_backbone_ckpt=$model_name_or_path/point_bert_v1.2.pt
 
 torchrun --nnodes=1 --nproc_per_node=4 --master_port=$master_port llana/train/train_mem_llana.py \
     --model_name_or_path $model_name_or_path \
