@@ -31,13 +31,12 @@
   </a>
 </p>
 <p>
-    <div style="text-align: center;">
-    <span style="color: red; font-weight: bold">
-        (*) I am currently seeking internship opportunities! 
-        <br> Feel free to contact me at 
-        <a href="mailto:andrea.amaduzzi4@unibo.it">andrea.amaduzzi4@unibo.it</a> or connect with me on 
-        <a href="https://x.com/andrea_amaduzzi" target="_blank">Twitter</a>.
-    </span>
+    <p align="center">
+    <b> (*) I am currently seeking internship opportunities! 
+    <br> Feel free to contact me at 
+    <a href="mailto:andrea.amaduzzi4@unibo.it">andrea.amaduzzi4@unibo.it</a> or connect with me on 
+    <a href="https://x.com/andrea_amaduzzi" target="_blank">Twitter</a>.</b>
+</p>
 </p>
 </p>
 
