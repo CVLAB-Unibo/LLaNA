@@ -3,7 +3,7 @@
 <h1 align="center"><img src="assets/llana_icon-removebg-preview.png" align="center" width="8.0%" style="vertical-align: middle">LLaNA: Large Language and NeRF Assistant (NeurIPS&nbsp;2024)</h1> 
 
   <p align="center">
-    <a href='https://andreamaduzzi.github.io/' target='_blank'>Andrea Amaduzzi (*)</a>&emsp;
+    <a href='https://andreamaduzzi.github.io/' target='_blank'>Andrea Amaduzzi *</a>&emsp;
     <a href='https://www.unibo.it/sitoweb/pierluigi.zama' target='_blank'>Pierluigi Zama Ramirez</a>&emsp;
     <a href='https://www.unibo.it/sitoweb/giuseppe.lisanti' target='_blank'>Giuseppe Lisanti</a>&emsp;
     <a href='https://www.unibo.it/sitoweb/samuele.salti' target='_blank'>Samuele Salti</a>&emsp;
