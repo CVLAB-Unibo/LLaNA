@@ -3,7 +3,7 @@
 <h1 align="center"><img src="assets/llana_icon-removebg-preview.png" align="center" width="8.0%" style="vertical-align: middle">LLaNA: Large Language and NeRF Assistant (NeurIPS&nbsp;2024)</h1> 
 
   <p align="center">
-    <a href='https://andreamaduzzi.github.io/' target='_blank'>Andrea Amaduzzi *</a>&emsp;
+    <a href='https://andreamaduzzi.github.io/' target='_blank'>Andrea Amaduzzi </a>&emsp;
     <a href='https://www.unibo.it/sitoweb/pierluigi.zama' target='_blank'>Pierluigi Zama Ramirez</a>&emsp;
     <a href='https://www.unibo.it/sitoweb/giuseppe.lisanti' target='_blank'>Giuseppe Lisanti</a>&emsp;
     <a href='https://www.unibo.it/sitoweb/samuele.salti' target='_blank'>Samuele Salti</a>&emsp;
@@ -17,6 +17,9 @@
   <a href="https://arxiv.org/abs/2406.11840" target='_**blank**'>
     <img src="https://img.shields.io/badge/Paper-PDF-red?" style="margin-right: 10px;">
   </a> 
+  <a href="https://arxiv.org/pdf/2504.13995" target='_**blank**'>
+    <img src="https://img.shields.io/badge/Extended Paper-PDF-red?" style="margin-right: 10px;">
+  </a> 
   <a href="https://andreamaduzzi.github.io/llana/" target='_blank'>
     <img src="https://img.shields.io/badge/Project-Page-red" style="margin-right: 10px;">
   </a>
@@ -29,10 +32,7 @@
 </p>
 <p>
     <p align="center">
-    <b> (*) I am currently seeking internship opportunities! 
-    <br> Feel free to contact me at 
-    <a href="mailto:andrea.amaduzzi4@unibo.it">andrea.amaduzzi4@unibo.it</a> or connect with me on 
-    <a href="https://x.com/andrea_amaduzzi" target="_blank">Twitter</a>.</b>
+    <b> The extended version of this paper is available on <a href="https://arxiv.org/pdf/2504.13995" target="_blank">Arxiv</a></b>
 </p>
 </p>
 </p>
@@ -80,6 +80,7 @@ pip install flash-attn==2.5.6
 ```
 
 ## 📦 Data Preparation
+### ShapeNeRF-Text
 ShapeNeRF-Text provides paired NeRFs and language annotations for ShapeNet objects, in particular for all the 40K NeRFs available in [nf2vec](https://github.com/CVLAB-Unibo/nf2vec) dataset.
 Such data can be downloaded and prepared from the Huggingface Hub:
 ```bash
@@ -122,6 +123,10 @@ where:
 1. texts/ folder contains the language annotations 
 2. vecs/ folder contains the embeddings from nf2vec
 
+### ObjaNeRF-Text
+ObjaNeRF-Text has the same structure as ShapeNeRF-Text. You can find it on the Huggingface Hub at [this link](https://huggingface.co/datasets/andreamaduzzi/ObjaNeRF-Text).
+
+
 ## 👨‍🎓 Training
 <p align="center">
   <img src="assets/model.png" alt="Model architecture">
@@ -143,7 +148,7 @@ LLaNA has been trained on 4 NVIDIA A100 with 64GB of VRAM each. Completing both 
 The weights of the trained models will be saved inside the `outputs` directory.
 
 ## Checkpoints of trained LLaNA
-The trained LLaNA-7b model is hosted on Huggingface Hub [here](https://huggingface.co/andreamaduzzi/LLaNA-7B). The weights are automatically downloaded when needed, while running the training or evaluation scripts.
+The trained LLaNA-7b model is hosted on Huggingface Hub [here](https://huggingface.co/andreamaduzzi/LLaNA-7B).The weights are automatically downloaded when needed, while running the training or evaluation scripts. [Here](https://huggingface.co/andreamaduzzi), you can find also the v2 versions of LLaNA-7b and LLaNA-13b which have been trained on the joint dataset consisting of ShapeNeRF-Text and ObjaNeRF-Text, as specified in [Scaling LLaNA: Advancing NeRF-Language Understanding Through Large-Scale Training](https://arxiv.org/abs/2504.13995).
 
 ## 🧑‍🏫 Evaluation
 The evaluation metrics reported in the research paper are computed on the test set of ShapeNeRF-Text, which can be downloaded following the instructions in the Data Preparation section.
@@ -204,6 +209,18 @@ If you find our work helpful, please consider starring this repo 🌟 and cite:
   year         = "2024",
   month        = "Dec."
 } 
+```
+
+```bibtex
+@misc{ArXiV2025,
+      title={Scaling LLaNA: Advancing NeRF-Language Understanding Through Large-Scale Training}, 
+      author={Andrea Amaduzzi and Pierluigi Zama Ramirez and Giuseppe Lisanti and Samuele Salti and Luigi Di Stefano},
+      year={2025},
+      eprint={2504.13995},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV},
+      url={https://arxiv.org/abs/2504.13995}, 
+}
 ```
 
 ## 📚 Related Work
